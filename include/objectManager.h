@@ -15,8 +15,9 @@ public:
 
 private: // helper functions
 	void loadBackground();
-	void loadJungle(){};
+	void loadLevel(){};
 	void loadMainCharacter(){};
+
 	
 };
 

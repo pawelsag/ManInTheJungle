@@ -5,8 +5,9 @@ objectManager::objectManager(SDL_Renderer & renderObject)
 {
 	this->loadBackground();
 	this->loadMainCharacter();
-	this->loadGround();
+	this->loadLevel();
 }
+
 void objectManager::loadBackground(){
 
 	std::string fileName("plx-1.png");
