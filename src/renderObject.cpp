@@ -63,9 +63,16 @@ bool renderObject::loadTexturesFromFile( const std::string && fileName, SDL_Rend
 	return true;
 }
 
+void renderObject::setLoadedTexture(const renderObject & instance){
+	this->sprite = instance.sprite;
+}
+
+void renderObject::setLoadedTexture(SDL_Texture & texture){
+	this->sprite->push_back(&texture);
+}
+
 void renderObject::setTextutreMetaData(SDL_Rect & textureParams){
 	this->cropedTexture = std::make_unique<SDL_Rect>(textureParams);
-
 }
 
 void renderObject::setTextutreMetaData(int x,int y, int w, int h){
@@ -82,4 +89,5 @@ void renderObject::updatePosition(int x, int y){
 }
 
 renderObject::~renderObject(){
+
 }

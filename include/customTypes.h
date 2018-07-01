@@ -1,4 +1,6 @@
 #include <SDL2/SDL.h>
+#include <string>
+
 #ifndef CUSTOMTEXTURES
 #define CUSTOMTEXTURES
 
@@ -82,11 +84,6 @@ struct TextureRenderPosition{
 	}
 };
 
-struct basicRenderObject{
-	TextureRenderPosition *pos;
-	SDL_Texture *texture;
-	SDL_Rect * textureMetaData;
-};
 
 
 #endif

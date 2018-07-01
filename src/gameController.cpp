@@ -75,13 +75,13 @@ void gameController::clearMove(SDL_Keycode & keyID){
 }
 
 void gameController::updateObjectsPosition(){
-	for(auto &object : objects->GameObjects){
-		
+	for(auto &object : objects->BackgroundObjects){
 		object->updatePosition(velocityHorizontal,velocityVertical);
 		display.appendObject(object);
 	}
 
 }
+
 gameController::~gameController(){
 	delete objects;
 }

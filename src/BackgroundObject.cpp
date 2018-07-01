@@ -9,14 +9,17 @@ BackgroundObject::BackgroundObject(int x, int y, int width, int height)
 BackgroundObject::BackgroundObject(BackgroundObject & instance)
 :renderObject(instance)
 {
+	this->textType = TEXTURETYPE::BACKGROUND;
 }
 BackgroundObject::BackgroundObject(renderObject && instance)
 :renderObject( std::move(instance) )
 {
+	this->textType = TEXTURETYPE::BACKGROUND;
 }
 BackgroundObject::BackgroundObject(BackgroundObject * instance)
 :renderObject(instance)
 {
+	this->textType = TEXTURETYPE::BACKGROUND;
 }
 BackgroundObject::BackgroundObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture)
 	:renderObject(positionInfo, textureParam,std::move(texture) )

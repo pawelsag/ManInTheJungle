@@ -34,11 +34,12 @@ def countSigns(byteTable, fileDescriptor):
 		else:
 			signs.update({sign : 1})
 	# data offset for data 
-	 							# x_size ,y_size ,dataOffset_size signDescription_size  
-	dataOffset = struct.pack("<H", (4 + 4 + 4 + 4*len(signs) )  )
+	 							# x_size ,y_size ,dataOffset_size signDescription_size
+	print(len(signs))  
+	dataOffset = struct.pack("<H", (4 + 4 + 2 + len(signs) )  )
 	fileDescriptor.write(dataOffset)
 	for key,value in signs.items():
-		fileDescriptor.write(struct.pack("<L",key))
+		fileDescriptor.write(struct.pack("<B", key ) )
 		
 		
 

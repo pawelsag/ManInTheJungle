@@ -43,6 +43,8 @@ public:
 	renderObject & operator=( renderObject& texture );
 	
 	virtual bool loadTexturesFromFile( const std::string && fileName,  SDL_Renderer & renderObj);
+	virtual void setLoadedTexture(const renderObject & instance);
+	virtual void setLoadedTexture(SDL_Texture & texture);
 	// set textture internal croped meta info
 	virtual void setTextutreMetaData( int x,int y, int w, int h );
 	virtual void setTextutreMetaData( SDL_Rect & textureParams );
