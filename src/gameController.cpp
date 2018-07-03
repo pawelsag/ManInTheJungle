@@ -2,6 +2,15 @@
 
 gameController::gameController(){
 	objectsManager = new objectManager( this->display.getRenderObject(), this->mapColCount, this->mapRowCount);
+	currentRenderOffset_x = 0 ;
+	if(objectsManager->levelSize.y < mapRowCount ){
+		mapRowCount = objectsManager->levelSize.y;
+		currentRenderOffset_y = 0;
+	}else{
+		// render max visible screen size
+		currentRenderOffset_y = objectsManager->levelSize.y - mapRowCount - 1;// -1 cause idx start from 0
+	}
+	currentRenderOffset_y_copy =currentRenderOffset_y;
 	printf("%i %i \n",this->mapColCount,this->mapRowCount );
 }
 
@@ -81,22 +90,20 @@ void gameController::updateObjectsPosition(){
 		display.appendObject(object);
 	}
 
-	for(size_t i = 0, row = 0 , col = 0; i < jungleItemsCount ; i++){
-		auto &tileInfo = objectsManager->getJungleTileInfo(objectsManager->mapLevel[ col * 200 + row ]);
+	for(size_t i = 0, row = 0 , col = 0,currentRenderOffset_y = currentRenderOffset_y_copy ; i < jungleItemsCount ; i++){
+		auto &tileInfo = objectsManager->getJungleTileInfo(objectsManager->mapLevel[ currentRenderOffset_y * 200 + currentRenderOffset_x + col ]);
 		
 		this->objectsManager->visibleRenderTiles[i].setTextutreMetaData(tileInfo.cropAreaInfo);
-		this->objectsManager->visibleRenderTiles[i].setPosition(row*40 , col*30);
+		this->objectsManager->visibleRenderTiles[i].setPosition(col*40 , row*40);
 		display.appendObject(&this->objectsManager->visibleRenderTiles[i]);
 		col++;
-		
-		if(col == (mapColCount) ){
-			col =0;
-			row++;
-			if(row == (mapRowCount) )
-				row=0;
-		}
 
-	}
+		if(col == (mapColCount) ){
+			col = 0;
+			currentRenderOffset_y++;
+			row++;
+		}
+	}			
 
 }
 

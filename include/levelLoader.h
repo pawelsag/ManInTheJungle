@@ -2,7 +2,7 @@
 #include <vector>
 #include <fstream>
 #include "globalSettings.h"
-
+#include "customTypes.h"
 #ifndef LEVELLOADER
 #define LEVELLOADER
 
@@ -24,7 +24,12 @@ public:
 	inline std::vector<unsigned char> & getSignature(){
 		return signatures;
 	}
-
+	inline containerSize getLevelSize(){
+		containerSize tmp_size;
+		tmp_size.x = this->size_x;
+		tmp_size.y = this->size_y;
+		return tmp_size;
+	}
 private:
 	void loadMetaData();
 	void loadLevel();

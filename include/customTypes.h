@@ -104,4 +104,8 @@ struct JungleTilesSettings{
 
 };
 
+struct containerSize{
+	size_t x,y;
+};
+
 #endif

@@ -34,6 +34,8 @@ private://members
 	size_t mapColCount = ((SCREEN_WIDTH/JUNGLE_TILE_X_SIZE)+1);
 	size_t mapRowCount = (SCREEN_HEIGHT/JUNGLE_TILE_Y_SIZE);
 	size_t jungleItemsCount = mapColCount * mapRowCount;
+	size_t currentRenderOffset_x;
+	size_t currentRenderOffset_y, currentRenderOffset_y_copy; 
 
 public:
 	gameController();

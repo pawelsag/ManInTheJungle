@@ -2,6 +2,7 @@
 #include "levelLoader.h"
 #include "renderObject.h"
 #include "jungleObject.h"
+#include "customTypes.h"
 #ifndef OBJECTMANAGER
 #define OBJECTMANAGER
 // this class is responsible for loading, and preapring 
@@ -24,6 +25,7 @@ private: // members
 	// this is table which cointains the visible amount of tiles to render
 	// during rendering change only the position of each tile and what to render
 	std::unique_ptr<jungleObject[]> visibleRenderTiles;
+	containerSize levelSize;
 
 	size_t mapRowsCount, mapColsCount;
 public:

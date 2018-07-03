@@ -49,6 +49,5 @@ void levelLoader::loadLevel(){
 	fileIn.seekg( offset, fileIn.beg );
 
 	fileIn.read((char*)this->levelMapArray.get(),fileSize);
-	// for(size_t i  =0 ; i <size_x*size_y; i++)
-	// 	printf(" %i %x \n",i ,levelMapArray[i] );
+	
 }

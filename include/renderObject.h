@@ -78,6 +78,7 @@ public:
 	inline void setPosition(TextureRenderPosition &positionInfo){
 		this->position = positionInfo;
 	}
+	
 };
 
 #endif

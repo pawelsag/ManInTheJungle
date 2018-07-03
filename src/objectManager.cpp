@@ -42,6 +42,7 @@ void objectManager::loadLevel(){
 	// all information about loaded signatures are in ./config/README.docx file
 	levelManager.loadLevel( levels[0] );
 	mapLevel = std::move(levelManager.getLevel());
+	levelSize = levelManager.getLevelSize();
 	auto & signatures = levelManager.getSignature();
 
 	// tempoorary variable, just for preapred new jungle objects 
