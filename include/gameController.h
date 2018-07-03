@@ -25,17 +25,20 @@ private://members
 	SDL_Event event;
 	STATES globalState;
 	// variabels keep info about currently set speed
-	double velocityHorizontal{ 0.0 };
-	double velocityVertical{ 0.0 };
+	int velocityHorizontal{ 0 };
+	int velocityVertical{ 0 };
 	// main values, that follow main camera position
-	int absoluteValueX{0};
-	int absoluteValueY{0};
+	int absolutePositionX{0};
+	int absolutepositionY{0};
+	// variables holds information about tile movemnt
+	int jungleTilePosition{0},jungleTilePositionReset{0};
 	// we need 1 extra column rendered bacause when we have to fill the gap on the edge of screen
 	size_t mapColCount = ((SCREEN_WIDTH/JUNGLE_TILE_X_SIZE)+1);
 	size_t mapRowCount = (SCREEN_HEIGHT/JUNGLE_TILE_Y_SIZE);
 	size_t jungleItemsCount = mapColCount * mapRowCount;
 	size_t currentRenderOffset_x;
 	size_t currentRenderOffset_y, currentRenderOffset_y_copy; 
+	bool keyPressed{false};
 
 public:
 	gameController();

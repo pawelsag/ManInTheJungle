@@ -19,7 +19,7 @@ void objectManager::loadBackground(){
 	for(int i =1 ; i < 6 ; i++){
 		fileName[4] = (char)(i + 0x30);
 		// make texture bit bigger than screen to simulate movment
-		this->BackgroundObjects.push_back( new BackgroundObject(0, 0, SCREEN_WIDTH ,SCREEN_HEIGHT + 200 ) );
+		this->BackgroundObjects.push_back( new BackgroundObject(0, -200, SCREEN_WIDTH ,SCREEN_HEIGHT + 200 ) );
 		this->BackgroundObjects[i-1]->loadTexturesFromFile((pathToBG + fileName) ,renderObject);
 	}
 
@@ -29,8 +29,8 @@ void objectManager::loadBackground(){
 		// make copy of loaded texture
 		this->BackgroundObjects.push_back(new BackgroundObject( this->BackgroundObjects[i] ) );
 		// set new position
-		this->BackgroundObjects[ i + backgroundSize ]->setPosition(SCREEN_WIDTH,0);
-		this->BackgroundObjects[ i + backgroundSize ]->setBeginPosition(SCREEN_WIDTH,0);
+		this->BackgroundObjects[ i + backgroundSize ]->setPosition(SCREEN_WIDTH,-200);
+		this->BackgroundObjects[ i + backgroundSize ]->setBeginPosition(SCREEN_WIDTH,-200);
 		
 	}
 	printf("Loading file done\n");
@@ -67,16 +67,16 @@ void objectManager::loadLevel(){
 			JungleTilesInfo.push_back( JungleTilesSettings( 0x0,cropedTexture ) );
 			break;
 			case 0x76:
-			//dark ground	
+			//light ground	
 			cropedTexture.x = 30;
-			cropedTexture.y = 42;
+			cropedTexture.y = 30;
 			JungleTilesInfo.push_back( JungleTilesSettings(0x76,cropedTexture) );
 
 			break;
 			case 0xEB:
-			//light ground
+			//dark ground
 			cropedTexture.x = 30;
-			cropedTexture.y = 30;
+			cropedTexture.y = 42;
 			JungleTilesInfo.push_back( JungleTilesSettings(0xEB,cropedTexture) );
 
 			break;

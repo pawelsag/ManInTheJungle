@@ -8,7 +8,7 @@ gameController::gameController(){
 		currentRenderOffset_y = 0;
 	}else{
 		// render max visible screen size
-		currentRenderOffset_y = objectsManager->levelSize.y - mapRowCount - 1;// -1 cause idx start from 0
+		currentRenderOffset_y = objectsManager->levelSize.y - mapRowCount ;
 	}
 	currentRenderOffset_y_copy =currentRenderOffset_y;
 	printf("%i %i \n",this->mapColCount,this->mapRowCount );
@@ -33,12 +33,26 @@ void gameController::run(){
 				break;
 			}
 		}
-		absoluteValueX += velocityHorizontal;
-		// printf("%i \n",absoluteValueX );
-		if(absoluteValueX > 0){
-			absoluteValueX =0;
+		absolutePositionX += velocityHorizontal;
+		jungleTilePosition += velocityHorizontal;
+		// currentRenderOffset_x = absolutePositionX / (-40);
+		// printf("%i \n",absolutePositionX );
+		if(absolutePositionX > 0){
+			jungleTilePosition = 0;
+			absolutePositionX = 0;
+			jungleTilePositionReset=0;
 			continue;
 		}
+		
+		if(jungleTilePosition < -40 ){
+			currentRenderOffset_x++;
+			jungleTilePosition = -5 ;
+		}else if(jungleTilePosition > 0 ){
+			currentRenderOffset_x--;
+			jungleTilePosition = -35 ;
+		}
+
+		printf("%i %i\n", jungleTilePosition,currentRenderOffset_x);
 		this->display.clear();
 		this->updateObjectsPosition();
 		this->display.repaint();
@@ -47,14 +61,18 @@ void gameController::run(){
 }
 
 void gameController::makeMove(SDL_Keycode & keyID){
+	
 	switch(keyID){
 		case SDLK_LEFT:
 		velocityHorizontal = 5;
+		// if(jungleTilePositionReset == 0)
+		// 	jungleTilePositionReset = -40;
 		printf("Left pressed\n" );
 		break;
 		case SDLK_RIGHT:
 		printf("right pressed\n" );
 		velocityHorizontal = -5;
+		jungleTilePositionReset = 0;
 		break;
 		case SDLK_UP:
 		printf("up pressed\n");
@@ -92,9 +110,8 @@ void gameController::updateObjectsPosition(){
 
 	for(size_t i = 0, row = 0 , col = 0,currentRenderOffset_y = currentRenderOffset_y_copy ; i < jungleItemsCount ; i++){
 		auto &tileInfo = objectsManager->getJungleTileInfo(objectsManager->mapLevel[ currentRenderOffset_y * 200 + currentRenderOffset_x + col ]);
-		
 		this->objectsManager->visibleRenderTiles[i].setTextutreMetaData(tileInfo.cropAreaInfo);
-		this->objectsManager->visibleRenderTiles[i].setPosition(col*40 , row*40);
+		this->objectsManager->visibleRenderTiles[i].setPosition(col*40 + jungleTilePosition , row*40);
 		display.appendObject(&this->objectsManager->visibleRenderTiles[i]);
 		col++;
 
