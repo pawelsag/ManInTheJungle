@@ -1,5 +1,5 @@
 #include "jungleObject.h"
-jungleObject::jungleObject(int x, int y, int width, int height, unsigned int code)
+jungleObject::jungleObject(int x, int y, int width, int height, unsigned char code)
 	:renderObject(x,y,width,height)
 {
 	this->textType = TEXTURETYPE::OBSTACLE;
@@ -24,11 +24,15 @@ jungleObject::jungleObject(jungleObject * instance)
 	this->textType = TEXTURETYPE::OBSTACLE;
 	this->texture_code  = instance->texture_code;
 }
-jungleObject::jungleObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture, unsigned int code)
+jungleObject::jungleObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture, unsigned char code)
 	:renderObject(positionInfo, textureParam,std::move(texture) )
 {
 	this->textType = TEXTURETYPE::OBSTACLE;
 	this->texture_code = code;
+}
+jungleObject & jungleObject::operator=( jungleObject& instance ){
+	renderObject::operator=(instance);
+	return *this;
 }
 
 void jungleObject::updatePosition(int x, int y){

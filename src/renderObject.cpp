@@ -3,11 +3,12 @@
 #include <stdlib.h>
 renderObject::renderObject(int x, int y, int width, int height){
 	this->position = TextureRenderPosition(x,y,width,height);
-	this->sprite = std::make_shared<TextureVector>();
+	this->sprite = std::make_shared<PType::TextureVector>();
+	
 }
 
 renderObject::renderObject(TextureRenderPosition & positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture){
-	this->sprite = std::make_shared<TextureVector>();
+	this->sprite = std::make_shared<PType::TextureVector>();
 	this->position = positionInfo ;
 	this->sprite->push_back( &texture );
 	this->cropedTexture = std::make_unique<SDL_Rect>(textureParam);
@@ -49,6 +50,18 @@ renderObject::renderObject(renderObject &&object){
 	this->position = object.position;
 	this->textType = object.textType;
 }
+renderObject & renderObject::operator=(renderObject & instance){
+	if(this == &instance)
+		return *this;
+	if(instance.sprite != nullptr)
+		this->sprite = instance.sprite;
+	if(instance.cropedTexture != nullptr)
+		this->cropedTexture = std::make_unique<SDL_Rect>( *instance.cropedTexture );
+	this->position = instance.position;
+	this->textType = instance.textType;
+	
+	return *this;
+}
 
 bool renderObject::loadTexturesFromFile( const std::string && fileName, SDL_Renderer & renderObj){
 	SDL_Surface * loadedSurface = IMG_Load(fileName.c_str());
@@ -71,8 +84,9 @@ void renderObject::setLoadedTexture(SDL_Texture & texture){
 	this->sprite->push_back(&texture);
 }
 
-void renderObject::setTextutreMetaData(SDL_Rect & textureParams){
+void renderObject::setTextutreMetaData(const SDL_Rect & textureParams){
 	this->cropedTexture = std::make_unique<SDL_Rect>(textureParams);
+
 }
 
 void renderObject::setTextutreMetaData(int x,int y, int w, int h){

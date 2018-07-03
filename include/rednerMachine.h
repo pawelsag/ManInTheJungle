@@ -9,6 +9,7 @@ class rednerMachine
 {
 
 	std::vector<renderObject *> renderBuffer;
+
 	SDL_Window *windowHandle{nullptr};
 	SDL_Renderer * renderObj{nullptr};
 	SDL_Rect dstRenderSquare;

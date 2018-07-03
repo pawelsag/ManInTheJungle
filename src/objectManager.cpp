@@ -1,12 +1,15 @@
 #include "gameController.h"
-#include "jungleObject.h"
 
-objectManager::objectManager(SDL_Renderer & renderObject)
-:renderObject(renderObject)
+
+objectManager::objectManager(SDL_Renderer & renderObject, size_t x_size, size_t y_size)
+:renderObject(renderObject), visibleRenderTiles(new jungleObject[ ( x_size+1) * y_size ] ),
+ mapRowsCount(y_size), mapColsCount(x_size)
 {
+
 	this->loadBackground();
 	this->loadMainCharacter();
 	this->loadLevel();
+
 }
 
 void objectManager::loadBackground(){
@@ -16,7 +19,7 @@ void objectManager::loadBackground(){
 	for(int i =1 ; i < 6 ; i++){
 		fileName[4] = (char)(i + 0x30);
 		// make texture bit bigger than screen to simulate movment
-		this->BackgroundObjects.push_back( new BackgroundObject(0, 0, SCREEN_WIDTH ,SCREEN_HEIGHT + 100 ) );
+		this->BackgroundObjects.push_back( new BackgroundObject(0, 0, SCREEN_WIDTH ,SCREEN_HEIGHT + 200 ) );
 		this->BackgroundObjects[i-1]->loadTexturesFromFile((pathToBG + fileName) ,renderObject);
 	}
 
@@ -38,15 +41,19 @@ void objectManager::loadLevel(){
 
 	// all information about loaded signatures are in ./config/README.docx file
 	levelManager.loadLevel( levels[0] );
-	levelMap = std::move(levelManager.getLevel());
+	mapLevel = std::move(levelManager.getLevel());
 	auto & signatures = levelManager.getSignature();
 
 	// tempoorary variable, just for preapred new jungle objects 
-	jungleObject *item;
 	SDL_Rect cropedTexture;
 	// load texture to this object and share it with others objects
-	jungleObject temporary_item( 0,0,40,40,0 );
+	jungleObject temporary_item( 0,0,JUNGLE_TILE_X_SIZE,JUNGLE_TILE_Y_SIZE,0 );
 	temporary_item.loadTexturesFromFile((pathToJungleTiles + fileName) ,renderObject);
+	// share texture with every visible tile
+	for(size_t i =0 ; i < ( mapColsCount+1) * mapRowsCount ; i++ ){
+		this->visibleRenderTiles[i] = temporary_item;
+	}
+
 	for(auto & sign : signatures){
 		// contruct object with temp position, and size
 		cropedTexture.w = 12;
@@ -54,35 +61,30 @@ void objectManager::loadLevel(){
 		
 		switch(sign){
 			case 0x0:
-			// nothing
+			cropedTexture.x = 0;
+			cropedTexture.y = 0;
+			JungleTilesInfo.push_back( JungleTilesSettings( 0x0,cropedTexture ) );
 			break;
 			case 0x76:
 			//dark ground	
 			cropedTexture.x = 30;
 			cropedTexture.y = 42;
-			item = new jungleObject( 0,0,40,40, 0x76);
-			item->setTextutreMetaData(cropedTexture);
-			item->setLoadedTexture(temporary_item);
-			JungleObjects.push_back( item );
+			JungleTilesInfo.push_back( JungleTilesSettings(0x76,cropedTexture) );
 
 			break;
 			case 0xEB:
 			//light ground
 			cropedTexture.x = 30;
 			cropedTexture.y = 30;
-			item = new jungleObject( 0,0,40,40, 0xEB);
-			item->setTextutreMetaData(cropedTexture);
-			item->setLoadedTexture(temporary_item);
-			JungleObjects.push_back( item );
+			JungleTilesInfo.push_back( JungleTilesSettings(0xEB,cropedTexture) );
+
 			break;
 			case 0x46:
 			// lawn
 			cropedTexture.x = 30;
 			cropedTexture.y = 18;
-			item = new jungleObject( 0,0,40,40, 0x46);
-			item->setTextutreMetaData(cropedTexture);
-			item->setLoadedTexture(temporary_item);
-			JungleObjects.push_back( item );
+			JungleTilesInfo.push_back( JungleTilesSettings(0x46,cropedTexture) );
+
 			break;
 
 		}
@@ -93,7 +95,4 @@ objectManager::~objectManager(){
 	for(auto & object : BackgroundObjects)
 		delete object;
 	
-	for(auto & object : JungleObjects)
-		delete object;
-
 }

@@ -19,7 +19,7 @@ public:
 	BackgroundObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture);
 	
 	
-	BackgroundObject & operator=( BackgroundObject& texture );
+	BackgroundObject & operator=( BackgroundObject& instance );
 
 	~BackgroundObject();
 	void updatePosition(int x, int y);

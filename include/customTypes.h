@@ -84,6 +84,24 @@ struct TextureRenderPosition{
 	}
 };
 
+struct JungleTilesSettings{
+	unsigned char code;
+	SDL_Rect cropAreaInfo;
+	JungleTilesSettings(unsigned char code, int x, int y, int w, int h){
+		this->code =  code;
+		this->cropAreaInfo.x = x;
+		this->cropAreaInfo.y = y;
+		this->cropAreaInfo.w = w;
+		this->cropAreaInfo.h = h;
+	}
+	JungleTilesSettings(unsigned char code, SDL_Rect & cropedArea){
+		this->code =  code;
+		this->cropAreaInfo.x = cropedArea.x;
+		this->cropAreaInfo.y = cropedArea.y;
+		this->cropAreaInfo.w = cropedArea.w;
+		this->cropAreaInfo.h = cropedArea.h;
+	}
 
+};
 
 #endif

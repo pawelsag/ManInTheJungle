@@ -5,7 +5,11 @@ BackgroundObject::BackgroundObject(int x, int y, int width, int height)
 {
 	this->textType = TEXTURETYPE::BACKGROUND;
 }
+BackgroundObject & BackgroundObject::operator=( BackgroundObject& instance ){
 
+	renderObject::operator=(instance);
+	return *this;
+}
 BackgroundObject::BackgroundObject(BackgroundObject & instance)
 :renderObject(instance)
 {

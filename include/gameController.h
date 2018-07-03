@@ -18,7 +18,7 @@ class gameController
 {
 private://members
 	// main class which keep all loaded objects
-	objectManager *objects;
+	objectManager *objectsManager;
 	// main class to render prepared configuration on screen
 	rednerMachine display;
 	// variabel holds currently invoked event  
@@ -30,6 +30,10 @@ private://members
 	// main values, that follow main camera position
 	int absoluteValueX{0};
 	int absoluteValueY{0};
+	// we need 1 extra column rendered bacause when we have to fill the gap on the edge of screen
+	size_t mapColCount = ((SCREEN_WIDTH/JUNGLE_TILE_X_SIZE)+1);
+	size_t mapRowCount = (SCREEN_HEIGHT/JUNGLE_TILE_Y_SIZE);
+	size_t jungleItemsCount = mapColCount * mapRowCount;
 
 public:
 	gameController();

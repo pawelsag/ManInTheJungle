@@ -8,9 +8,7 @@
 #ifndef RENDEROBJECT
 #define RENDEROBJECT
 
-using TextureVector = std::vector< SDL_Texture *>;
-using RectPtr = std::unique_ptr<SDL_Rect>;
-using TextureVector_Ptr = std::shared_ptr<TextureVector>;
+
 
 class renderObject
 {
@@ -23,9 +21,9 @@ protected:
 	// keep info about texture internal data
 	// use this structure to crope asset
 	// you can set position 
-	RectPtr cropedTexture{nullptr};
+	PType::RectPtr cropedTexture{nullptr};
 	// ponter to texture pointer
-	TextureVector_Ptr sprite{nullptr};
+	PType::TextureVector_Ptr sprite{nullptr};
 	// keep info about texture positions 
 	TextureRenderPosition position;
 	TEXTURETYPE textType;
@@ -40,18 +38,20 @@ public:
 	renderObject( renderObject *object);
 	renderObject( renderObject &object);
 	renderObject( renderObject &&object);
-	renderObject & operator=( renderObject& texture );
+	virtual renderObject & operator=( renderObject& instance );
 	
 	virtual bool loadTexturesFromFile( const std::string && fileName,  SDL_Renderer & renderObj);
 	virtual void setLoadedTexture(const renderObject & instance);
 	virtual void setLoadedTexture(SDL_Texture & texture);
 	// set textture internal croped meta info
 	virtual void setTextutreMetaData( int x,int y, int w, int h );
-	virtual void setTextutreMetaData( SDL_Rect & textureParams );
+	virtual void setTextutreMetaData( const SDL_Rect & textureParams );
 	// modify object postion at given id
 	virtual void updatePosition( int x , int y );
 	
-
+	virtual unsigned char getCode()const{
+		return 0;
+	}
 	
 	~renderObject();
 

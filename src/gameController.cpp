@@ -1,7 +1,8 @@
 #include "gameController.h"
 
 gameController::gameController(){
-	objects = new objectManager( this->display.getRenderObject() );
+	objectsManager = new objectManager( this->display.getRenderObject(), this->mapColCount, this->mapRowCount);
+	printf("%i %i \n",this->mapColCount,this->mapRowCount );
 }
 
 void gameController::run(){
@@ -75,13 +76,30 @@ void gameController::clearMove(SDL_Keycode & keyID){
 }
 
 void gameController::updateObjectsPosition(){
-	for(auto &object : objects->BackgroundObjects){
+	for(auto &object : objectsManager->BackgroundObjects){
 		object->updatePosition(velocityHorizontal,velocityVertical);
 		display.appendObject(object);
+	}
+
+	for(size_t i = 0, row = 0 , col = 0; i < jungleItemsCount ; i++){
+		auto &tileInfo = objectsManager->getJungleTileInfo(objectsManager->mapLevel[ col * 200 + row ]);
+		
+		this->objectsManager->visibleRenderTiles[i].setTextutreMetaData(tileInfo.cropAreaInfo);
+		this->objectsManager->visibleRenderTiles[i].setPosition(row*40 , col*30);
+		display.appendObject(&this->objectsManager->visibleRenderTiles[i]);
+		col++;
+		
+		if(col == (mapColCount) ){
+			col =0;
+			row++;
+			if(row == (mapRowCount) )
+				row=0;
+		}
+
 	}
 
 }
 
 gameController::~gameController(){
-	delete objects;
+	delete objectsManager;
 }
