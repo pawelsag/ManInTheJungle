@@ -34,13 +34,13 @@ BackgroundObject::BackgroundObject(TextureRenderPosition &positionInfo, SDL_Rect
 void BackgroundObject::updatePosition(int x, int y){
 	
 	this->position.x_offset += x;
-	this->position.y_offset -= y;
+	this->position.y_offset += y;
 	
 	// printf("%i %i\n", this->position.x_offset , this->position.x_beginOffset);
 	if(this->position.x_offset <= -SCREEN_WIDTH ){
 		this->position.x_offset = SCREEN_WIDTH;
 	}
 	if(this->position.x_offset > SCREEN_WIDTH ){
-		this->position.x_offset = -SCREEN_WIDTH+5;
+		this->position.x_offset = -SCREEN_WIDTH + 5;
 	}   
 }

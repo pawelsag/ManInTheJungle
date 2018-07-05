@@ -51,6 +51,7 @@ void objectManager::loadLevel(){
 	jungleObject temporary_item( 0,0,JUNGLE_TILE_X_SIZE,JUNGLE_TILE_Y_SIZE,0 );
 	temporary_item.loadTexturesFromFile((pathToJungleTiles + fileName) ,renderObject);
 	// share texture with every visible tile
+	
 	for(size_t i =0 ; i < ( mapColsCount+1) * mapRowsCount ; i++ ){
 		this->visibleRenderTiles[i] = temporary_item;
 	}

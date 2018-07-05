@@ -33,27 +33,34 @@ void gameController::run(){
 				break;
 			}
 		}
-		absolutePositionX += velocityHorizontal;
-		jungleTilePosition += velocityHorizontal;
-		// currentRenderOffset_x = absolutePositionX / (-40);
-		// printf("%i \n",absolutePositionX );
-		if(absolutePositionX > 0){
-			jungleTilePosition = 0;
-			absolutePositionX = 0;
-			jungleTilePositionReset=0;
-			continue;
-		}
-		
-		if(jungleTilePosition < -40 ){
-			currentRenderOffset_x++;
-			jungleTilePosition = -5 ;
-		}else if(jungleTilePosition > 0 ){
-			currentRenderOffset_x--;
-			jungleTilePosition = -35 ;
+		isMoveValid = this->validateMove();
+
+		if( isMoveValid & MOVE_X_VALID  ){
+			absolutePositionX += velocityHorizontal;
+			jungleTilePosition_x += velocityHorizontal;
+			if(jungleTilePosition_x < -40 ){
+				currentRenderOffset_x++;
+				jungleTilePosition_x = -5 ;
+			}else if(jungleTilePosition_x > 0 ){
+				currentRenderOffset_x--;
+				jungleTilePosition_x = -35 ;
+			}
 		}
 
-		printf("%i %i\n", jungleTilePosition,currentRenderOffset_x);
+		if( isMoveValid & MOVE_Y_VALID ){
+			absolutePositionY += velocityVertical;
+			jungleTilePosition_y += velocityVertical;
+			if(jungleTilePosition_y > 40 ){
+				currentRenderOffset_y_copy--;
+				jungleTilePosition_y = 5 ;
+			}else if(jungleTilePosition_y < 0 ){
+				currentRenderOffset_y_copy++;
+				jungleTilePosition_y = 35 ;
+			}
+		}
+		
 		this->display.clear();
+
 		this->updateObjectsPosition();
 		this->display.repaint();
 		Sleep(50);
@@ -65,14 +72,12 @@ void gameController::makeMove(SDL_Keycode & keyID){
 	switch(keyID){
 		case SDLK_LEFT:
 		velocityHorizontal = 5;
-		// if(jungleTilePositionReset == 0)
-		// 	jungleTilePositionReset = -40;
+		
 		printf("Left pressed\n" );
 		break;
 		case SDLK_RIGHT:
 		printf("right pressed\n" );
 		velocityHorizontal = -5;
-		jungleTilePositionReset = 0;
 		break;
 		case SDLK_UP:
 		printf("up pressed\n");
@@ -103,15 +108,16 @@ void gameController::clearMove(SDL_Keycode & keyID){
 }
 
 void gameController::updateObjectsPosition(){
+	// render bacground
 	for(auto &object : objectsManager->BackgroundObjects){
 		object->updatePosition(velocityHorizontal,velocityVertical);
 		display.appendObject(object);
 	}
-
+	// render loaded map level 
 	for(size_t i = 0, row = 0 , col = 0,currentRenderOffset_y = currentRenderOffset_y_copy ; i < jungleItemsCount ; i++){
 		auto &tileInfo = objectsManager->getJungleTileInfo(objectsManager->mapLevel[ currentRenderOffset_y * 200 + currentRenderOffset_x + col ]);
 		this->objectsManager->visibleRenderTiles[i].setTextutreMetaData(tileInfo.cropAreaInfo);
-		this->objectsManager->visibleRenderTiles[i].setPosition(col*40 + jungleTilePosition , row*40);
+		this->objectsManager->visibleRenderTiles[i].setPosition(col*40 + jungleTilePosition_x , row*40 + jungleTilePosition_y);
 		display.appendObject(&this->objectsManager->visibleRenderTiles[i]);
 		col++;
 
@@ -122,6 +128,22 @@ void gameController::updateObjectsPosition(){
 		}
 	}			
 
+}
+gameController::MOVE gameController::validateMove(){
+	
+	MOVE state = IDLE;
+	// can't move on right platform
+	if( absolutePositionX + velocityHorizontal <= 0 ){
+		state |= MOVE::MOVE_X_VALID;
+	}else
+		velocityHorizontal =0;
+
+	// can't move beneath level
+	if( absolutePositionY + velocityVertical >= 0 && absolutePositionY + velocityVertical <=200 ){
+		state |= MOVE::MOVE_Y_VALID;
+	}else
+		velocityVertical =0;
+	return state;
 }
 
 gameController::~gameController(){

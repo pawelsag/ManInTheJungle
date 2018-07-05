@@ -51,12 +51,10 @@ def countSigns(byteTable, fileDescriptor):
 def reverseColumns(map, rows, cols):
 	map = list(map)
 
-	for i in range(int(cols[0]/2) ):
+	for i in range( cols[0]//2 ):
 		temp = map[i::200]
 		map[i::200] = map[(cols[0]-i-1)::200]
 		map[(cols[0]-i-1)::200] = temp 
-	
-	print(map)
 	
 			
 	return map
