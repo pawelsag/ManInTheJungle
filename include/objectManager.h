@@ -25,6 +25,9 @@ private: // members
 	// this is table which cointains the visible amount of tiles to render
 	// during rendering change only the position of each tile and what to render
 	std::unique_ptr<jungleObject[]> visibleRenderTiles;
+
+	// std::unique_ptr<renderObject[]> mainCharacterTiles;
+
 	containerSize levelSize;
 
 	size_t mapRowsCount, mapColsCount;
@@ -32,7 +35,7 @@ public:
 	objectManager(SDL_Renderer & renderObject, size_t x_size, size_t y_size);
 	~objectManager();
 
-	inline auto & getJungleTileInfo(char signature)const {
+	inline auto & getJungleTileInfo(unsigned char signature)const {
 		
 		for( auto & jungleTile : this->JungleTilesInfo)
 		{

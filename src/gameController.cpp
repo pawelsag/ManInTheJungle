@@ -38,7 +38,7 @@ void gameController::run(){
 		if( isMoveValid & MOVE_X_VALID  ){
 			absolutePositionX += velocityHorizontal;
 			jungleTilePosition_x += velocityHorizontal;
-			if(jungleTilePosition_x < -40 ){
+			if(jungleTilePosition_x < -JUNGLE_TILE_X_SIZE ){
 				currentRenderOffset_x++;
 				jungleTilePosition_x = -5 ;
 			}else if(jungleTilePosition_x > 0 ){
@@ -50,7 +50,7 @@ void gameController::run(){
 		if( isMoveValid & MOVE_Y_VALID ){
 			absolutePositionY += velocityVertical;
 			jungleTilePosition_y += velocityVertical;
-			if(jungleTilePosition_y > 40 ){
+			if(jungleTilePosition_y > JUNGLE_TILE_Y_SIZE ){
 				currentRenderOffset_y_copy--;
 				jungleTilePosition_y = 5 ;
 			}else if(jungleTilePosition_y < 0 ){
@@ -116,6 +116,7 @@ void gameController::updateObjectsPosition(){
 	// render loaded map level 
 	for(size_t i = 0, row = 0 , col = 0,currentRenderOffset_y = currentRenderOffset_y_copy ; i < jungleItemsCount ; i++){
 		auto &tileInfo = objectsManager->getJungleTileInfo(objectsManager->mapLevel[ currentRenderOffset_y * 200 + currentRenderOffset_x + col ]);
+		
 		this->objectsManager->visibleRenderTiles[i].setTextutreMetaData(tileInfo.cropAreaInfo);
 		this->objectsManager->visibleRenderTiles[i].setPosition(col*40 + jungleTilePosition_x , row*40 + jungleTilePosition_y);
 		display.appendObject(&this->objectsManager->visibleRenderTiles[i]);

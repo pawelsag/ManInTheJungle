@@ -23,7 +23,6 @@ public:
 
 	~BackgroundObject();
 	void updatePosition(int x, int y);
-	// bool loadTexturesFromFile( const std::string && fileName, SDL_Renderer & renderObj);
 private:
 	uint8_t textureRenderId {0};
 };

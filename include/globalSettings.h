@@ -7,8 +7,8 @@
 
 constexpr int SCREEN_WIDTH = 800;
 constexpr int SCREEN_HEIGHT = 600;
-constexpr int  JUNGLE_TILE_X_SIZE = 40;
-constexpr int  JUNGLE_TILE_Y_SIZE = 40; 
+constexpr int  JUNGLE_TILE_X_SIZE = SCREEN_WIDTH /20;
+constexpr int  JUNGLE_TILE_Y_SIZE = SCREEN_HEIGHT/15; 
 constexpr const char * pathToBG = "C:/SDLPRojects/SDL GAME/Textures/background/";
 constexpr const char * pathToCharacter = "C:/SDLPRojects/SDL GAME/Textures/Chacter_with_outline/sprites/";
 constexpr const char * pathToJungleTiles = "C:/SDLPRojects/SDL GAME/Textures/jungle_tileset/";

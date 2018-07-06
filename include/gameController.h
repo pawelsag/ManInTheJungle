@@ -8,6 +8,8 @@
 #include "objectManager.h"
 #ifndef GAMECONTROLLER
 #define GAMECONTROLLER
+constexpr const int POSTIVE_VELOCITY = 5;
+constexpr const int NEGATIVE_VELOCITY = -5;
 
 struct Point{
 	int x,y;

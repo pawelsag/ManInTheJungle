@@ -42,6 +42,7 @@ void objectManager::loadLevel(){
 	// all information about loaded signatures are in ./config/README.docx file
 	levelManager.loadLevel( levels[0] );
 	mapLevel = std::move(levelManager.getLevel());
+
 	levelSize = levelManager.getLevelSize();
 	auto & signatures = levelManager.getSignature();
 
@@ -51,16 +52,15 @@ void objectManager::loadLevel(){
 	jungleObject temporary_item( 0,0,JUNGLE_TILE_X_SIZE,JUNGLE_TILE_Y_SIZE,0 );
 	temporary_item.loadTexturesFromFile((pathToJungleTiles + fileName) ,renderObject);
 	// share texture with every visible tile
-	
 	for(size_t i =0 ; i < ( mapColsCount+1) * mapRowsCount ; i++ ){
 		this->visibleRenderTiles[i] = temporary_item;
+
 	}
 
 	for(auto & sign : signatures){
 		// contruct object with temp position, and size
 		cropedTexture.w = 12;
 		cropedTexture.h = 12;
-		
 		switch(sign){
 			case 0x0:
 			cropedTexture.x = 0;
@@ -79,7 +79,6 @@ void objectManager::loadLevel(){
 			cropedTexture.x = 30;
 			cropedTexture.y = 42;
 			JungleTilesInfo.push_back( JungleTilesSettings(0xEB,cropedTexture) );
-
 			break;
 			case 0x46:
 			// lawn
@@ -90,7 +89,8 @@ void objectManager::loadLevel(){
 			break;
 
 		}
-	}	
+	}
+	
 }
 
 objectManager::~objectManager(){

@@ -1,37 +1,37 @@
-#include "BackgroundObject.h"
+#include "characterObject.h"
 
-BackgroundObject::BackgroundObject(int x, int y, int width, int height)
+characterObject::characterObject(int x, int y, int width, int height)
 	:renderObject(x,y,width,height)
 {
 	this->textType = TEXTURETYPE::BACKGROUND;
 }
-BackgroundObject & BackgroundObject::operator=( BackgroundObject& instance ){
+characterObject & characterObject::operator=( characterObject& instance ){
 
 	renderObject::operator=(instance);
 	return *this;
 }
-BackgroundObject::BackgroundObject(BackgroundObject & instance)
+characterObject::characterObject(characterObject & instance)
 :renderObject(instance)
 {
 	this->textType = TEXTURETYPE::BACKGROUND;
 }
-BackgroundObject::BackgroundObject(renderObject && instance)
+characterObject::characterObject(renderObject && instance)
 :renderObject( std::move(instance) )
 {
 	this->textType = TEXTURETYPE::BACKGROUND;
 }
-BackgroundObject::BackgroundObject(BackgroundObject * instance)
+characterObject::characterObject(characterObject * instance)
 :renderObject(instance)
 {
 	this->textType = TEXTURETYPE::BACKGROUND;
 }
-BackgroundObject::BackgroundObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture)
+characterObject::characterObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture)
 	:renderObject(positionInfo, textureParam,std::move(texture) )
 {
 	this->textType = TEXTURETYPE::BACKGROUND;
 }
 
-void BackgroundObject::updatePosition(int x, int y){
+void characterObject::updatePosition(int x, int y){
 	
 	this->position.x_offset += x;
 	this->position.y_offset += y;
