@@ -11,7 +11,7 @@ renderObject::renderObject(TextureRenderPosition & positionInfo, SDL_Rect & text
 	this->sprite = std::make_shared<PType::TextureVector>();
 	this->position = positionInfo ;
 	this->sprite->push_back( &texture );
-	this->cropedTexture = std::make_unique<SDL_Rect>(textureParam);
+	this->cropedTexture.push_back( textureParam );
 }
 renderObject::renderObject(renderObject *object){
 	if(this == object)
@@ -19,8 +19,8 @@ renderObject::renderObject(renderObject *object){
 	if(object->sprite != nullptr)
 		this->sprite = object->sprite;
 
-	if(object->cropedTexture != nullptr)
-		this->cropedTexture = std::make_unique<SDL_Rect>( *object->cropedTexture );
+	
+	this->cropedTexture = object->cropedTexture ;
 	
 	this->position = object->position;
 	this->textType = object->textType;
@@ -33,8 +33,7 @@ renderObject::renderObject(renderObject &object){
 	if(object.sprite != nullptr)
 		this->sprite = object.sprite;
 
-	if(object.cropedTexture != nullptr)
-		this->cropedTexture = std::make_unique<SDL_Rect>( *object.cropedTexture );
+	this->cropedTexture = object.cropedTexture ;
 	
 	this->position = object.position;
 	this->textType = object.textType;
@@ -44,8 +43,7 @@ renderObject::renderObject(renderObject &&object){
 	if(object.sprite != nullptr)
 		this->sprite = object.sprite;
 
-	if(object.cropedTexture != nullptr)
-		this->cropedTexture = std::make_unique<SDL_Rect>( *object.cropedTexture );
+	this->cropedTexture =  object.cropedTexture;
 	
 	this->position = object.position;
 	this->textType = object.textType;
@@ -55,8 +53,19 @@ renderObject & renderObject::operator=(renderObject & instance){
 		return *this;
 	if(instance.sprite != nullptr)
 		this->sprite = instance.sprite;
-	if(instance.cropedTexture != nullptr)
-		this->cropedTexture = std::make_unique<SDL_Rect>( *instance.cropedTexture );
+	
+	this->cropedTexture = instance.cropedTexture;
+	this->position = instance.position;
+	this->textType = instance.textType;
+	
+	return *this;
+}
+renderObject & renderObject::operator=(renderObject && instance){
+	
+	if(instance.sprite != nullptr)
+		this->sprite = instance.sprite;
+	
+	this->cropedTexture = instance.cropedTexture;
 	this->position = instance.position;
 	this->textType = instance.textType;
 	
@@ -85,16 +94,34 @@ void renderObject::setLoadedTexture(SDL_Texture & texture){
 }
 
 void renderObject::setTextutreMetaData(const SDL_Rect & textureParams){
-	this->cropedTexture = std::make_unique<SDL_Rect>(textureParams);
+	this->cropedTexture.push_back(textureParams);
 
 }
+void renderObject::generateCropArea(int w, int h, int n){
+	int txWidth, txHeight;
+	SDL_QueryTexture((*this->sprite)[0],NULL,NULL,&txWidth,&txHeight);
+	SDL_Rect area;
+	// spli to n sub areas
+	for(int i =0,j=0,k=0 ;i <n; i++){
+		area.x= w*j;
+		area.y = h*k;
+		area.w = w;
+		area.h = h;
+		cropedTexture.push_back(area);
+		if(w*j == txWidth){
+			j = 0;
+			k++;
+		}	
+	}
 
+}
 void renderObject::setTextutreMetaData(int x,int y, int w, int h){
-	this->cropedTexture = std::make_unique<SDL_Rect>();
-	this->cropedTexture->x = x;
-	this->cropedTexture->y = y;
-	this->cropedTexture->w = w;
-	this->cropedTexture->h = h;
+	SDL_Rect temp;
+	temp.x = x;
+	temp.y = y;
+	temp.w = w;
+	temp.h = h;
+	this->cropedTexture.push_back(temp);
 }
 
 void renderObject::updatePosition(int x, int y){

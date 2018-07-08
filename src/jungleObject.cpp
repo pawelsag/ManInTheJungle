@@ -18,23 +18,33 @@ jungleObject::jungleObject(jungleObject && instance)
 	this->textType = TEXTURETYPE::OBSTACLE;
 	this->texture_code  = instance.texture_code;
 }
+
 jungleObject::jungleObject(jungleObject * instance)
 :renderObject(instance)
 {
 	this->textType = TEXTURETYPE::OBSTACLE;
 	this->texture_code  = instance->texture_code;
 }
+
 jungleObject::jungleObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture, unsigned char code)
 	:renderObject(positionInfo, textureParam,std::move(texture) )
 {
 	this->textType = TEXTURETYPE::OBSTACLE;
 	this->texture_code = code;
 }
+
 jungleObject & jungleObject::operator=( jungleObject& instance ){
 	renderObject::operator=(instance);
+	texture_code = instance.texture_code;
 	return *this;
 }
 
+jungleObject & jungleObject::operator=( jungleObject&& instance ){
+	renderObject::operator=(instance);
+		texture_code = instance.texture_code;
+
+	return *this;
+}
 void jungleObject::updatePosition(int x, int y){
 	
 	this->position.x_offset += x;

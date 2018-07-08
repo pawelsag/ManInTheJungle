@@ -20,6 +20,8 @@ public:
 	
 	
 	BackgroundObject & operator=( BackgroundObject& instance );
+	BackgroundObject & operator=( BackgroundObject&& instance );
+
 
 	~BackgroundObject();
 	void updatePosition(int x, int y);

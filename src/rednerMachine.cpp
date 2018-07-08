@@ -60,8 +60,8 @@ void rednerMachine::repaint(){
 		this->dstRenderSquare.y = object->position.y_offset;
 		this->dstRenderSquare.w = object->position.width;
 		this->dstRenderSquare.h = object->position.height;
-		SDL_RenderCopy( this->renderObj, (*(object->sprite))[object->renderId],object->cropedTexture.get(),&this->dstRenderSquare );	
+		SDL_RenderCopy( this->renderObj, (*(object->sprite))[0],&object->cropedTexture[object->renderId],&this->dstRenderSquare );	
 	}
-	// puts("");
+	
 	SDL_RenderPresent( this->renderObj );
 }

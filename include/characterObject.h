@@ -2,28 +2,24 @@
 #define CHARACTEROBJECT
 
 #include "renderObject.h"
-class characterObject : renderObject{
+class characterObject :public renderObject{
 
-	enum CHARACTERSTATE{
-		IDLE,
-		JUMP,
-		RUNLEFT,
-		RUNRIGHT,		
-	};
+
 public:
-	const CHARACTERSTATE state;
-	characterObject() = delete;
-	characterObject(int x, int y, int width, int height, CHARACTERSTATE s);
+	ST::CHARACTERSTATE state;
+	characterObject() = default;
+	characterObject(int x, int y, int width, int height, ST::CHARACTERSTATE State);
 	characterObject(characterObject * instance);
 	characterObject(characterObject & instance);
-	characterObject(renderObject && instance);
-	characterObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture);
+	characterObject(characterObject && instance);
+	characterObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture,ST::CHARACTERSTATE State);
 	
 	characterObject & operator=( characterObject& instance );
+	characterObject & operator=( characterObject&& instance );
 
-	~characterObject();
+	~characterObject(){};
 	void updatePosition(int x, int y);
 
-}
+};
 
 #endif

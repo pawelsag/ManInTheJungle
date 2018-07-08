@@ -20,6 +20,7 @@ public:
 	jungleObject( jungleObject &&object);
 	~jungleObject();
 	jungleObject & operator=( jungleObject& instance );
+	jungleObject & operator=( jungleObject&& instance );
 	inline unsigned char getCode()const{
 		return this->texture_code;
 	}

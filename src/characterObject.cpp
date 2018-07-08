@@ -1,34 +1,43 @@
 #include "characterObject.h"
 
-characterObject::characterObject(int x, int y, int width, int height)
+characterObject::characterObject(int x, int y, int width, int height,ST::CHARACTERSTATE State)
 	:renderObject(x,y,width,height)
 {
-	this->textType = TEXTURETYPE::BACKGROUND;
+	this->state = State;
 }
 characterObject & characterObject::operator=( characterObject& instance ){
 
 	renderObject::operator=(instance);
+	this->state = instance.state;
+
+	return *this;
+}
+characterObject & characterObject::operator=( characterObject&& instance ){
+
+	renderObject::operator=(instance);
+	this->state = instance.state;
+
 	return *this;
 }
 characterObject::characterObject(characterObject & instance)
 :renderObject(instance)
 {
-	this->textType = TEXTURETYPE::BACKGROUND;
+	this->state = instance.state;
 }
-characterObject::characterObject(renderObject && instance)
+characterObject::characterObject(characterObject && instance)
 :renderObject( std::move(instance) )
 {
-	this->textType = TEXTURETYPE::BACKGROUND;
+	this->state = instance.state;
 }
 characterObject::characterObject(characterObject * instance)
 :renderObject(instance)
 {
-	this->textType = TEXTURETYPE::BACKGROUND;
+	this->state = instance->state;
 }
-characterObject::characterObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture)
+characterObject::characterObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture,ST::CHARACTERSTATE State)
 	:renderObject(positionInfo, textureParam,std::move(texture) )
 {
-	this->textType = TEXTURETYPE::BACKGROUND;
+	this->state = State;
 }
 
 void characterObject::updatePosition(int x, int y){

@@ -2,6 +2,8 @@
 #include "levelLoader.h"
 #include "renderObject.h"
 #include "jungleObject.h"
+#include "characterObject.h"
+#include <array>
 #include "customTypes.h"
 #ifndef OBJECTMANAGER
 #define OBJECTMANAGER
@@ -25,11 +27,10 @@ private: // members
 	// this is table which cointains the visible amount of tiles to render
 	// during rendering change only the position of each tile and what to render
 	std::unique_ptr<jungleObject[]> visibleRenderTiles;
-
-	// std::unique_ptr<renderObject[]> mainCharacterTiles;
+	std::unique_ptr<characterObject[]> MainPlayerObjects;
 
 	containerSize levelSize;
-
+	
 	size_t mapRowsCount, mapColsCount;
 public:
 	objectManager(SDL_Renderer & renderObject, size_t x_size, size_t y_size);
@@ -49,7 +50,7 @@ public:
 private: // helper functions
 	void loadBackground();
 	void loadLevel();
-	void loadMainCharacter(){};
+	void loadMainCharacter();
 
 	
 };

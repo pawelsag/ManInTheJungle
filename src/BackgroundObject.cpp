@@ -10,6 +10,12 @@ BackgroundObject & BackgroundObject::operator=( BackgroundObject& instance ){
 	renderObject::operator=(instance);
 	return *this;
 }
+BackgroundObject & BackgroundObject::operator=( BackgroundObject&& instance ){
+
+	renderObject::operator=(instance);
+	return *this;
+}
+
 BackgroundObject::BackgroundObject(BackgroundObject & instance)
 :renderObject(instance)
 {

@@ -2,10 +2,12 @@
 
 
 objectManager::objectManager(SDL_Renderer & renderObject, size_t x_size, size_t y_size)
-:renderObject(renderObject), visibleRenderTiles(new jungleObject[ ( x_size+1) * y_size ] ),
+:renderObject(renderObject), 
+visibleRenderTiles(new jungleObject[ ( x_size+1) * y_size ] ),
+MainPlayerObjects(new characterObject[sizeof(ST::CHARACTERSTATE) ]),
  mapRowsCount(y_size), mapColsCount(x_size)
 {
-
+	printf("%i\n",sizeof(ST::CHARACTERSTATE) );
 	this->loadBackground();
 	this->loadMainCharacter();
 	this->loadLevel();
@@ -90,7 +92,26 @@ void objectManager::loadLevel(){
 
 		}
 	}
-	
+
+}
+
+void objectManager::loadMainCharacter(){
+	std::vector<ST::CHARACTERSTATE_INFO> characterTextureState = 
+	{
+		ST::CHARACTERSTATE_INFO(charcterStateNames[0],ST::CHARACTERSTATE::IDLE),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[1],ST::CHARACTERSTATE::JUMP),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[2],ST::CHARACTERSTATE::RUNLEFT),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[3],ST::CHARACTERSTATE::RUNRIGHT),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[4],ST::CHARACTERSTATE::HANG),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[5],ST::CHARACTERSTATE::SPECIAL),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[6],ST::CHARACTERSTATE::LANDING),
+	};
+	int i =0;
+	for(auto & st : characterTextureState){
+		MainPlayerObjects[i] = characterObject(0,0,60,80,st.State) ;
+		MainPlayerObjects[i].loadTexturesFromFile(st.TextureName,renderObject);
+	}
+
 }
 
 objectManager::~objectManager(){

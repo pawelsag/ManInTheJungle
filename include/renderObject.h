@@ -21,7 +21,7 @@ protected:
 	// keep info about texture internal data
 	// use this structure to crope asset
 	// you can set position 
-	PType::RectPtr cropedTexture{nullptr};
+	PType::RectVector cropedTexture;
 	// ponter to texture pointer
 	PType::TextureVector_Ptr sprite{nullptr};
 	// keep info about texture positions 
@@ -38,17 +38,20 @@ public:
 	renderObject( renderObject *object);
 	renderObject( renderObject &object);
 	renderObject( renderObject &&object);
-	virtual renderObject & operator=( renderObject& instance );
-	
-	virtual bool loadTexturesFromFile( const std::string && fileName,  SDL_Renderer & renderObj);
+	virtual renderObject & operator=( renderObject& instance );	
+	virtual renderObject & operator=( renderObject&& instance );
+
+	bool loadTexturesFromFile( const std::string && fileName,  SDL_Renderer & renderObj);
 	virtual void setLoadedTexture(const renderObject & instance);
 	virtual void setLoadedTexture(SDL_Texture & texture);
 	// set textture internal croped meta info
 	virtual void setTextutreMetaData( int x,int y, int w, int h );
 	virtual void setTextutreMetaData( const SDL_Rect & textureParams );
+	// split area with given height and width with additional dellimiter 
+	virtual void generateCropArea(int w, int h, int n);
 	// modify object postion at given id
 	virtual void updatePosition( int x , int y );
-	
+		
 	virtual unsigned char getCode()const{
 		return 0;
 	}

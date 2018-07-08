@@ -9,7 +9,7 @@
 class levelLoader
 {
 	PType::u_char_ptr levelMapArray;
-	size_t size_x, size_y, offset;
+	size_t size_x{0}, size_y{0}, offset{0};
 	bool levelLoaded;
 	std::fstream fileIn;
 	std::vector<unsigned char> signatures;
@@ -33,6 +33,7 @@ public:
 private:
 	void loadMetaData();
 	void loadLevel();
+
 };
 
 #endif

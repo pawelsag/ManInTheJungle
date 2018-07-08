@@ -104,6 +104,34 @@ struct JungleTilesSettings{
 
 };
 
+enum STATES{
+	ACTIVE,
+	QUIT
+};
+enum TEXTURETYPE{
+	BACKGROUND,
+	CHARACTER,
+	BOT,
+	OBSTACLE
+};
+
+namespace ST{
+	enum CHARACTERSTATE{
+		IDLE,
+		JUMP,
+		RUNLEFT,
+		RUNRIGHT,
+		LANDING,
+		HANG,
+		SPECIAL
+	};
+	struct CHARACTERSTATE_INFO{
+		const char * TextureName;
+		CHARACTERSTATE State;
+		int n, w, h ;
+		CHARACTERSTATE_INFO(const char * name, CHARACTERSTATE state):TextureName(name),State(state){}
+	};
+};
 struct containerSize{
 	size_t x,y;
 };
