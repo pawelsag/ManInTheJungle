@@ -30,7 +30,10 @@ private: // members
 	std::unique_ptr<characterObject[]> MainPlayerObjects;
 
 	containerSize levelSize;
-	
+	// fast state lokok-up tabel
+	// translate states to get object with proper texture 
+	std::array<uint32_t, ST::STATE_COUNT > stateLookUpTable;
+	// var with map size
 	size_t mapRowsCount, mapColsCount;
 public:
 	objectManager(SDL_Renderer & renderObject, size_t x_size, size_t y_size);

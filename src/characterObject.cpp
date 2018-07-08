@@ -19,6 +19,7 @@ characterObject & characterObject::operator=( characterObject&& instance ){
 
 	return *this;
 }
+
 characterObject::characterObject(characterObject & instance)
 :renderObject(instance)
 {

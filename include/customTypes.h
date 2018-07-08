@@ -117,7 +117,7 @@ enum TEXTURETYPE{
 
 namespace ST{
 	enum CHARACTERSTATE{
-		IDLE,
+		IDLE=0,
 		JUMP,
 		RUNLEFT,
 		RUNRIGHT,
@@ -125,11 +125,17 @@ namespace ST{
 		HANG,
 		SPECIAL
 	};
+	constexpr const int STATE_COUNT = CHARACTERSTATE::SPECIAL + 1; 
+
 	struct CHARACTERSTATE_INFO{
 		const char * TextureName;
 		CHARACTERSTATE State;
+		// Since there are diffrent settings for each characterTexture
+		// n -- number of diffrent texture poses
+		// w,h -- width and height for each pose
 		int n, w, h ;
-		CHARACTERSTATE_INFO(const char * name, CHARACTERSTATE state):TextureName(name),State(state){}
+		CHARACTERSTATE_INFO(const char * name, CHARACTERSTATE state, int _n, int _w, int _h)
+		:TextureName(name),State(state),n(_n),w(_w),h(_h){}
 	};
 };
 struct containerSize{

@@ -97,7 +97,7 @@ void renderObject::setTextutreMetaData(const SDL_Rect & textureParams){
 	this->cropedTexture.push_back(textureParams);
 
 }
-void renderObject::generateCropArea(int w, int h, int n){
+void renderObject::generateCropArea(int n, int w, int h){
 	int txWidth, txHeight;
 	SDL_QueryTexture((*this->sprite)[0],NULL,NULL,&txWidth,&txHeight);
 	SDL_Rect area;

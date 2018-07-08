@@ -2,6 +2,14 @@
 jungleObject::jungleObject(int x, int y, int width, int height, unsigned char code)
 	:renderObject(x,y,width,height)
 {
+	this->cropedTexture.push_back({0,0,width,height});
+	this->textType = TEXTURETYPE::OBSTACLE;
+	this->texture_code = code;
+}
+
+jungleObject::jungleObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture, unsigned char code)
+	:renderObject(positionInfo, textureParam,std::move(texture) )
+{
 	this->textType = TEXTURETYPE::OBSTACLE;
 	this->texture_code = code;
 }
@@ -26,12 +34,6 @@ jungleObject::jungleObject(jungleObject * instance)
 	this->texture_code  = instance->texture_code;
 }
 
-jungleObject::jungleObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture, unsigned char code)
-	:renderObject(positionInfo, textureParam,std::move(texture) )
-{
-	this->textType = TEXTURETYPE::OBSTACLE;
-	this->texture_code = code;
-}
 
 jungleObject & jungleObject::operator=( jungleObject& instance ){
 	renderObject::operator=(instance);
@@ -58,4 +60,14 @@ void jungleObject::updatePosition(int x, int y){
 		this->position.x_offset = -SCREEN_WIDTH+5;
 	}   
 }
+void jungleObject::setTextutreMetaData( int x,int y, int w, int h ){
+	SDL_Rect tmp{x,y,w,h};
+	this->cropedTexture[0] = tmp; 
+}
+
+void jungleObject::setTextutreMetaData( const SDL_Rect & textureParams ){
+	this->cropedTexture[0] = textureParams;	
+}
+
+
 jungleObject::~jungleObject(){}

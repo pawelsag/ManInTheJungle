@@ -8,6 +8,7 @@ gameController::gameController(){
 		currentRenderOffset_y = 0;
 	}else{
 		// render max visible screen size
+		// in case map is smaller than screen
 		currentRenderOffset_y = objectsManager->levelSize.y - mapRowCount ;
 	}
 	currentRenderOffset_y_copy =currentRenderOffset_y;
@@ -72,11 +73,12 @@ void gameController::makeMove(SDL_Keycode & keyID){
 	switch(keyID){
 		case SDLK_LEFT:
 		velocityHorizontal = 5;
-		
+		currentPlayerState = ST::CHARACTERSTATE::RUNLEFT;
 		printf("Left pressed\n" );
 		break;
 		case SDLK_RIGHT:
 		printf("right pressed\n" );
+		currentPlayerState = ST::CHARACTERSTATE::RUNRIGHT;
 		velocityHorizontal = -5;
 		break;
 		case SDLK_UP:
@@ -98,6 +100,7 @@ void gameController::clearMove(SDL_Keycode & keyID){
 		case SDLK_RIGHT:
 		printf("right/left released\n" );
 		velocityHorizontal = 0;
+		currentPlayerState = ST::CHARACTERSTATE::IDLE;
 		break;
 		case SDLK_UP:
 		case SDLK_DOWN:
@@ -126,7 +129,11 @@ void gameController::updateObjectsPosition(){
 			currentRenderOffset_y++;
 			row++;
 		}
-	}			
+	}
+	// render main player
+	int playerIdx = objectsManager->stateLookUpTable[currentPlayerState];
+	display.appendObject(&objectsManager->MainPlayerObjects[playerIdx]);
+	
 
 }
 gameController::MOVE gameController::validateMove(){

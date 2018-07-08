@@ -6,6 +6,7 @@
 #include <windows.h>
 #include "customTypes.h"
 #include "objectManager.h"
+#include <characterObject.h>
 #ifndef GAMECONTROLLER
 #define GAMECONTROLLER
 constexpr const int POSTIVE_VELOCITY = 5;
@@ -58,8 +59,9 @@ private://members
 	size_t jungleItemsCount = mapColCount * mapRowCount;
 	size_t currentRenderOffset_x;
 	size_t currentRenderOffset_y, currentRenderOffset_y_copy; 
+	// variable to validate move
 	MOVE isMoveValid{MOVE::IDLE};
-
+	ST::CHARACTERSTATE currentPlayerState{ST::CHARACTERSTATE::IDLE};
 public:
 	gameController();
 	void run();

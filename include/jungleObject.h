@@ -21,6 +21,9 @@ public:
 	~jungleObject();
 	jungleObject & operator=( jungleObject& instance );
 	jungleObject & operator=( jungleObject&& instance );
+	void setTextutreMetaData( int x,int y, int w, int h );
+	void setTextutreMetaData( const SDL_Rect & textureParams );
+	
 	inline unsigned char getCode()const{
 		return this->texture_code;
 	}

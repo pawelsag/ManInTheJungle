@@ -17,7 +17,10 @@ class renderObject
 protected:	
 	// variable used only when object conatains texture sets
 	// it is used to animate each sprite 
-	int renderId{0};
+	int renderTxtId{0};
+	
+	int cropId{0};
+
 	// keep info about texture internal data
 	// use this structure to crope asset
 	// you can set position 
@@ -48,7 +51,7 @@ public:
 	virtual void setTextutreMetaData( int x,int y, int w, int h );
 	virtual void setTextutreMetaData( const SDL_Rect & textureParams );
 	// split area with given height and width with additional dellimiter 
-	virtual void generateCropArea(int w, int h, int n);
+	virtual void generateCropArea(int n, int w, int h);
 	// modify object postion at given id
 	virtual void updatePosition( int x , int y );
 		

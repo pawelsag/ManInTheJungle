@@ -4,7 +4,7 @@
 objectManager::objectManager(SDL_Renderer & renderObject, size_t x_size, size_t y_size)
 :renderObject(renderObject), 
 visibleRenderTiles(new jungleObject[ ( x_size+1) * y_size ] ),
-MainPlayerObjects(new characterObject[sizeof(ST::CHARACTERSTATE) ]),
+MainPlayerObjects(new characterObject[ ST::STATE_COUNT ]),
  mapRowsCount(y_size), mapColsCount(x_size)
 {
 	printf("%i\n",sizeof(ST::CHARACTERSTATE) );
@@ -96,20 +96,32 @@ void objectManager::loadLevel(){
 }
 
 void objectManager::loadMainCharacter(){
+	// main charater object vector with given states
 	std::vector<ST::CHARACTERSTATE_INFO> characterTextureState = 
 	{
-		ST::CHARACTERSTATE_INFO(charcterStateNames[0],ST::CHARACTERSTATE::IDLE),
-		ST::CHARACTERSTATE_INFO(charcterStateNames[1],ST::CHARACTERSTATE::JUMP),
-		ST::CHARACTERSTATE_INFO(charcterStateNames[2],ST::CHARACTERSTATE::RUNLEFT),
-		ST::CHARACTERSTATE_INFO(charcterStateNames[3],ST::CHARACTERSTATE::RUNRIGHT),
-		ST::CHARACTERSTATE_INFO(charcterStateNames[4],ST::CHARACTERSTATE::HANG),
-		ST::CHARACTERSTATE_INFO(charcterStateNames[5],ST::CHARACTERSTATE::SPECIAL),
-		ST::CHARACTERSTATE_INFO(charcterStateNames[6],ST::CHARACTERSTATE::LANDING),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[0],ST::CHARACTERSTATE::IDLE,12,19,34),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[1],ST::CHARACTERSTATE::JUMP,1,17,34),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[2],ST::CHARACTERSTATE::RUNLEFT,8,22,33),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[3],ST::CHARACTERSTATE::RUNRIGHT,8,22,33),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[4],ST::CHARACTERSTATE::HANG,5,21,41),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[5],ST::CHARACTERSTATE::SPECIAL,2,20,35),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[6],ST::CHARACTERSTATE::LANDING,1,20,35),
 	};
+	// when above vecor change states, this LookUp table have to be updated
+	stateLookUpTable[ST::CHARACTERSTATE::IDLE] = 0;
+	stateLookUpTable[ST::CHARACTERSTATE::JUMP] = 1;
+	stateLookUpTable[ST::CHARACTERSTATE::RUNLEFT] = 2;
+	stateLookUpTable[ST::CHARACTERSTATE::RUNRIGHT] = 3;
+	stateLookUpTable[ST::CHARACTERSTATE::HANG] = 4;
+	stateLookUpTable[ST::CHARACTERSTATE::SPECIAL] = 5;
+	stateLookUpTable[ST::CHARACTERSTATE::LANDING] = 6;
+
 	int i =0;
 	for(auto & st : characterTextureState){
 		MainPlayerObjects[i] = characterObject(0,0,60,80,st.State) ;
-		MainPlayerObjects[i].loadTexturesFromFile(st.TextureName,renderObject);
+		MainPlayerObjects[i].loadTexturesFromFile(std::string(pathToCharacter) + st.TextureName,renderObject);
+		MainPlayerObjects[i].generateCropArea(st.n,st.w,st.h);
+		i++;
 	}
 
 }
