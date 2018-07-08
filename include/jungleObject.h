@@ -28,6 +28,7 @@ public:
 		return this->texture_code;
 	}
 	
+	
 	void updatePosition( int x , int y );
 };
 

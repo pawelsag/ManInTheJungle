@@ -103,16 +103,22 @@ void renderObject::generateCropArea(int n, int w, int h){
 	SDL_Rect area;
 	// spli to n sub areas
 	for(int i =0,j=0,k=0 ;i <n; i++){
+		if(w*j == txWidth){
+			j = 0;
+			k++;
+		}
 		area.x= w*j;
 		area.y = h*k;
 		area.w = w;
 		area.h = h;
+		 printf("%i %i \n",area.x,area.y );
+
 		cropedTexture.push_back(area);
-		if(w*j == txWidth){
-			j = 0;
-			k++;
-		}	
+		
+		
+		j++;	
 	}
+	this->cropAreaAmount = n;
 
 }
 void renderObject::setTextutreMetaData(int x,int y, int w, int h){

@@ -48,6 +48,6 @@ void BackgroundObject::updatePosition(int x, int y){
 	}
 	
 	if(this->position.x_offset > SCREEN_WIDTH ){
-		this->position.x_offset = -SCREEN_WIDTH + 5;
+		this->position.x_offset = -SCREEN_WIDTH + velocity;
 	}   
 }

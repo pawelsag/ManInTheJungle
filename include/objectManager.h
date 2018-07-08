@@ -39,6 +39,13 @@ public:
 	objectManager(SDL_Renderer & renderObject, size_t x_size, size_t y_size);
 	~objectManager();
 
+	inline characterObject * getPlayerTextureInGivenState(ST::CHARACTERSTATE & state){
+		int playerIdx = this->stateLookUpTable[state];
+		MainPlayerObjects[playerIdx].renderNextFrame();
+		return &MainPlayerObjects[playerIdx];
+
+	}
+
 	inline auto & getJungleTileInfo(unsigned char signature)const {
 		
 		for( auto & jungleTile : this->JungleTilesInfo)

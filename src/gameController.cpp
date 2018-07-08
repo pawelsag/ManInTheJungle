@@ -37,15 +37,20 @@ void gameController::run(){
 		isMoveValid = this->validateMove();
 
 		if( isMoveValid & MOVE_X_VALID  ){
-			absolutePositionX += velocityHorizontal;
-			jungleTilePosition_x += velocityHorizontal;
-			if(jungleTilePosition_x < -JUNGLE_TILE_X_SIZE ){
-				currentRenderOffset_x++;
-				jungleTilePosition_x = -5 ;
-			}else if(jungleTilePosition_x > 0 ){
-				currentRenderOffset_x--;
-				jungleTilePosition_x = -35 ;
+			if(absolutePositionX > -250){
+				playerStartOffset_x -= velocityHorizontal;
 			}
+			else{
+				jungleTilePosition_x += velocityHorizontal;
+				if(jungleTilePosition_x < -JUNGLE_TILE_X_SIZE ){
+					currentRenderOffset_x++;
+					jungleTilePosition_x = -5 ;
+				}else if(jungleTilePosition_x > 0 ){
+					currentRenderOffset_x--;
+					jungleTilePosition_x = -35 ;
+				}
+			}
+			absolutePositionX += velocityHorizontal;
 		}
 
 		if( isMoveValid & MOVE_Y_VALID ){
@@ -61,7 +66,6 @@ void gameController::run(){
 		}
 		
 		this->display.clear();
-
 		this->updateObjectsPosition();
 		this->display.repaint();
 		Sleep(50);
@@ -72,22 +76,24 @@ void gameController::makeMove(SDL_Keycode & keyID){
 	
 	switch(keyID){
 		case SDLK_LEFT:
-		velocityHorizontal = 5;
+		velocityHorizontal = velocity;
 		currentPlayerState = ST::CHARACTERSTATE::RUNLEFT;
 		printf("Left pressed\n" );
 		break;
 		case SDLK_RIGHT:
 		printf("right pressed\n" );
 		currentPlayerState = ST::CHARACTERSTATE::RUNRIGHT;
-		velocityHorizontal = -5;
+		velocityHorizontal = -velocity;
 		break;
 		case SDLK_UP:
 		printf("up pressed\n");
-		velocityVertical = 5;
+		currentPlayerState = ST::CHARACTERSTATE::JUMP;
+		velocityVertical = velocity;
 		break;
 		case SDLK_DOWN:
 		printf("dwon pressed\n");
-		velocityVertical = -5;
+		currentPlayerState = ST::CHARACTERSTATE::LANDING;
+		velocityVertical = -velocity;
 		break;
 	}
 }
@@ -100,7 +106,6 @@ void gameController::clearMove(SDL_Keycode & keyID){
 		case SDLK_RIGHT:
 		printf("right/left released\n" );
 		velocityHorizontal = 0;
-		currentPlayerState = ST::CHARACTERSTATE::IDLE;
 		break;
 		case SDLK_UP:
 		case SDLK_DOWN:
@@ -108,12 +113,14 @@ void gameController::clearMove(SDL_Keycode & keyID){
 		velocityVertical = 0;
 		break;
 	}
+	currentPlayerState = ST::CHARACTERSTATE::IDLE;
 }
 
 void gameController::updateObjectsPosition(){
 	// render bacground
 	for(auto &object : objectsManager->BackgroundObjects){
-		object->updatePosition(velocityHorizontal,velocityVertical);
+		if(absolutePositionX < -250)
+			object->updatePosition(velocityHorizontal,velocityVertical);
 		display.appendObject(object);
 	}
 	// render loaded map level 
@@ -131,8 +138,9 @@ void gameController::updateObjectsPosition(){
 		}
 	}
 	// render main player
-	int playerIdx = objectsManager->stateLookUpTable[currentPlayerState];
-	display.appendObject(&objectsManager->MainPlayerObjects[playerIdx]);
+	auto player =  objectsManager->getPlayerTextureInGivenState(currentPlayerState);
+	player->setPosition(playerStartOffset_x, playerStartOffset_y);
+	display.appendObject( player );
 	
 
 }

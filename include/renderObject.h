@@ -18,9 +18,10 @@ protected:
 	// variable used only when object conatains texture sets
 	// it is used to animate each sprite 
 	int renderTxtId{0};
-	
-	int cropId{0};
-
+	// vraible controls currently displayed croped area
+	int cropId{0}; 
+	// informs about divided textures areas count 
+	int cropAreaAmount{0};
 	// keep info about texture internal data
 	// use this structure to crope asset
 	// you can set position 
@@ -84,7 +85,10 @@ public:
 	inline void setPosition(TextureRenderPosition &positionInfo){
 		this->position = positionInfo;
 	}
-	
+	inline void resetRenderedFrame(){
+		this->cropId = 0 ;
+		this->renderTxtId =0;
+	}
 };
 
 #endif

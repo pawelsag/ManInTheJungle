@@ -20,6 +20,15 @@ public:
 	~characterObject(){};
 	void updatePosition(int x, int y);
 
+	inline void renderNextFrame(){
+		if( this->cropId >= this->cropAreaAmount-1 )
+			this->cropId = 0;
+		else
+			this->cropId++;
+		
+		
+	}
+
 };
 
 #endif

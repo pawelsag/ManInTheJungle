@@ -62,6 +62,8 @@ private://members
 	// variable to validate move
 	MOVE isMoveValid{MOVE::IDLE};
 	ST::CHARACTERSTATE currentPlayerState{ST::CHARACTERSTATE::IDLE};
+	// evry level starts on platform consist of 3 block of ground and 2 block of player = 5*JUNGLE_TILE_Y_SIZE
+	int playerStartOffset_x{10}, playerStartOffset_y{SCREEN_HEIGHT - 5*JUNGLE_TILE_Y_SIZE }; 
 public:
 	gameController();
 	void run();
