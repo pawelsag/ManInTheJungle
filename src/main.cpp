@@ -17,7 +17,7 @@ int CALLBACK WinMain(
 	mainGame.run();
 	return 0;
 }
-#endif
+#else
 int main(int argc, char const *argv[])
 {
 	
@@ -26,3 +26,4 @@ int main(int argc, char const *argv[])
 
 	return 0;
 }
+#endif

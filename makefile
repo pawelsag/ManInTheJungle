@@ -16,7 +16,7 @@ LINKER_FLAGS := -lSDL2main -lSDL2 -lSDL2_image
 
 ifeq ($(OS),Windows_NT)
 	LINKER_FLAGS += -lmingw32
-	INCLUDE_PATHS := -I"C:\mingw32\i686-w64-mingw32\include\SDL2"
+	INCLUDE_PATHS += -I"C:\mingw32\i686-w64-mingw32\include\SDL2"
 endif
 EXEC = First_game
 
