@@ -1,9 +1,11 @@
 #include <vector>
 #include <SDL2/SDL.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include "BackgroundObject.h"
 #include "rednerMachine.h"
 #include "globalSettings.h"
-#include <windows.h>
 #include "customTypes.h"
 #include "objectManager.h"
 #include <characterObject.h>
