@@ -99,7 +99,10 @@ void renderObject::setTextutreMetaData(const SDL_Rect & textureParams){
 }
 void renderObject::generateCropArea(int n, int w, int h){
 	int txWidth, txHeight;
-	SDL_QueryTexture((*this->sprite)[0],NULL,NULL,&txWidth,&txHeight);
+
+	if( SDL_QueryTexture((*this->sprite)[0],NULL,NULL,&txWidth,&txHeight) < 0){
+		printf("Error %i \n", SDL_GetError() );
+	}
 	SDL_Rect area;
 	// spli to n sub areas
 	for(int i =0,j=0,k=0 ;i <n; i++){

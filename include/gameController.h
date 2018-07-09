@@ -1,14 +1,14 @@
 #include <vector>
 #include <SDL2/SDL.h>
-#ifdef _WIN32
-#include <windows.h>
-#endif
+#include <chrono>
+#include <thread>
 #include "BackgroundObject.h"
 #include "rednerMachine.h"
 #include "globalSettings.h"
 #include "customTypes.h"
 #include "objectManager.h"
 #include <characterObject.h>
+
 #ifndef GAMECONTROLLER
 #define GAMECONTROLLER
 constexpr const int POSTIVE_VELOCITY = 5;
@@ -51,8 +51,8 @@ private://members
 	int velocityHorizontal{ 0 };
 	int velocityVertical{ 0 };
 	// main values, that follow main camera position
-	int absolutePositionX{0};
-	int absolutePositionY{0};
+	int absolutePositionX{ 0 };
+	int absolutePositionY{ 0 };
 	// variables holds information about tiles render position
 	int jungleTilePosition_x{0}, jungleTilePosition_y{0};
 	// we need 1 extra column rendered bacause when we have to fill the gap on the edge of screen

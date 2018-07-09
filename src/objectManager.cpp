@@ -1,8 +1,8 @@
 #include "gameController.h"
 
 
-objectManager::objectManager(SDL_Renderer & renderObject, size_t x_size, size_t y_size)
-:renderObject(renderObject), 
+objectManager::objectManager(SDL_Renderer & render_Object, size_t x_size, size_t y_size)
+:render_Object(render_Object), 
 visibleRenderTiles(new jungleObject[ ( x_size+1) * y_size ] ),
 MainPlayerObjects(new characterObject[ ST::STATE_COUNT ]),
  mapRowsCount(y_size), mapColsCount(x_size)
@@ -22,7 +22,7 @@ void objectManager::loadBackground(){
 		fileName[4] = (char)(i + 0x30);
 		// make texture bit bigger than screen to simulate movment
 		this->BackgroundObjects.push_back( new BackgroundObject(0, -200, SCREEN_WIDTH ,SCREEN_HEIGHT + 200 ) );
-		this->BackgroundObjects[i-1]->loadTexturesFromFile((pathToBG + fileName) ,renderObject);
+		this->BackgroundObjects[i-1]->loadTexturesFromFile((pathToBG + fileName) ,render_Object);
 	}
 
 	auto backgroundSize =BackgroundObjects.size();
@@ -52,7 +52,7 @@ void objectManager::loadLevel(){
 	SDL_Rect cropedTexture;
 	// load texture to this object and share it with others objects
 	jungleObject temporary_item( 0,0,JUNGLE_TILE_X_SIZE,JUNGLE_TILE_Y_SIZE,0 );
-	temporary_item.loadTexturesFromFile((pathToJungleTiles + fileName) ,renderObject);
+	temporary_item.loadTexturesFromFile((pathToJungleTiles + fileName) ,render_Object);
 	// share texture with every visible tile
 	for(size_t i =0 ; i < ( mapColsCount+1) * mapRowsCount ; i++ ){
 		this->visibleRenderTiles[i] = temporary_item;
@@ -119,7 +119,7 @@ void objectManager::loadMainCharacter(){
 	int i =0;
 	for(auto & st : characterTextureState){
 		MainPlayerObjects[i] = characterObject(0,0,60,80,st.State) ;
-		MainPlayerObjects[i].loadTexturesFromFile(std::string(pathToCharacter) + st.TextureName,renderObject);
+		MainPlayerObjects[i].loadTexturesFromFile(std::string(pathToCharacter) + st.TextureName,render_Object);
 		MainPlayerObjects[i].generateCropArea(st.n,st.w,st.h);
 		i++;
 	}
