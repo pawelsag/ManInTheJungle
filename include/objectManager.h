@@ -18,7 +18,7 @@ private: // members
 	// 
 	std::vector<renderObject*> BackgroundObjects;
 	std::vector<JungleTilesSettings> JungleTilesInfo;
-	SDL_Renderer & renderObject;
+	SDL_Renderer & render_Object;
 
 	// object load levels and store map for given level
 	levelLoader levelManager;

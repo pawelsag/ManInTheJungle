@@ -4,6 +4,7 @@
 bool levelLoader::loadLevel(const std::string & name){
 	
 	fileIn.open( (pathToLevels + name).c_str(), std::fstream::in | std::fstream::binary);
+	printf("%s\n", (pathToLevels + name).c_str());
 	if( !fileIn.is_open() ){
 		printf("Can't load map \n");
 		exit(1);

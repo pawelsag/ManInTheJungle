@@ -1,4 +1,5 @@
 #include "jungleObject.h"
+
 jungleObject::jungleObject(int x, int y, int width, int height, unsigned char code)
 	:renderObject(x,y,width,height)
 {

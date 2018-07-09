@@ -9,14 +9,14 @@ CC = g++
 
 LIB_PATHS := -L"C:\mingw32\i686-w64-mingw32\lib"
 
-CXX_FLAGS := -Wextra -ggdb -std=c++14 -O3
+CXX_FLAGS := -w -ggdb -std=c++14 -O3
 
 INCLUDE_PATHS := -I"./include"
 LINKER_FLAGS := -lSDL2main -lSDL2 -lSDL2_image
 
 ifeq ($(OS),Windows_NT)
 	LINKER_FLAGS += -lmingw32
-	INCLUDE_PATHS := -I"C:\mingw32\i686-w64-mingw32\include\SDL2"
+	INCLUDE_PATHS += -I"C:\mingw32\i686-w64-mingw32\include\SDL2"
 endif
 EXEC = First_game
 
@@ -35,5 +35,5 @@ clean:
 ifeq ($(OS),Windows_NT)
 	@del /Q $(EXEC) $(STAGE)\*
 else
-	@rm -rf ./$(EXEC) ./$(STAGE)\*
+	@rm -rf ./$(EXEC) $(STAGE)/*
 endif
