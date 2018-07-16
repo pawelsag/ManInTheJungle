@@ -42,7 +42,7 @@ void BackgroundObject::updatePosition(int x, int y){
 	this->position.x_offset += x;
 	this->position.y_offset += y;
 	
-	// printf("%i %i\n", this->position.x_offset , this->position.x_beginOffset);
+	// printf("%i\n", this->position.y_offset);
 	if(this->position.x_offset <= -SCREEN_WIDTH ){
 		this->position.x_offset = SCREEN_WIDTH  ;
 	}

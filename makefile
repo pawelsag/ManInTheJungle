@@ -12,7 +12,7 @@ LIB_PATHS := -L"C:\mingw32\i686-w64-mingw32\lib"
 CXX_FLAGS := -w -ggdb -std=c++14 -O3
 
 INCLUDE_PATHS := -I"./include"
-LINKER_FLAGS := -lSDL2main -lSDL2 -lSDL2_image
+LINKER_FLAGS := -lSDL2main -lSDL2 -lSDL2_image -lpthread
 
 ifeq ($(OS),Windows_NT)
 	LINKER_FLAGS += -lmingw32

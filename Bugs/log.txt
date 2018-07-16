@@ -1,0 +1,3 @@
+[16.07] 
+- When player gets out from zone where background do not move, y and x axis are calculated          improperly 
+- render texture failes when velocty != 5 [ jungle tiles render well ]

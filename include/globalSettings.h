@@ -12,7 +12,11 @@ constexpr int  JUNGLE_TILE_Y_SIZE = SCREEN_HEIGHT/15;
 constexpr const char * pathToBG = "./Textures/background/";
 constexpr const char * pathToCharacter = "./Textures/Character/sprites/";
 constexpr const char * pathToJungleTiles = "./Textures/jungle_tileset/";
-constexpr const int velocity = 5; 
+// velocity can be only JUNGLE_TILE_X_SIZE multiple 
+constexpr const int velocity = 10; 
+constexpr const int TILE_CONST_SHIFT_RIGHT = -(((JUNGLE_TILE_X_SIZE / velocity)+1)*velocity - JUNGLE_TILE_X_SIZE);
+constexpr const int TILE_CONST_SHIFT_LEFT = (-JUNGLE_TILE_X_SIZE) - TILE_CONST_SHIFT_RIGHT;
+
 const std::string pathToLevels = "./config/levels/"; 
 constexpr const char * levels[2] = { "level1raw.bin" /*,"LEVEL2"*/ };
 constexpr const char * charcterStateNames[7] = {

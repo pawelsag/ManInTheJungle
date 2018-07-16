@@ -8,6 +8,7 @@
 #include "customTypes.h"
 #include "objectManager.h"
 #include <characterObject.h>
+#include <gravitation.h>
 
 #ifndef GAMECONTROLLER
 #define GAMECONTROLLER
@@ -44,6 +45,8 @@ private://members
 	objectManager *objectsManager;
 	// main class to render prepared configuration on screen
 	rednerMachine display;
+	// main class to manage gravitation
+	gravitation gravityObject;
 	// variabel holds currently invoked event  
 	SDL_Event event;
 	STATES globalState;
@@ -77,6 +80,7 @@ private: // methods
 	void clearMove( SDL_Keycode & keyID );
 	void updateObjectsPosition();
 
+	
 
 };
 
