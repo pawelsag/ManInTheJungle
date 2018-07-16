@@ -19,6 +19,7 @@ constexpr const int TILE_CONST_SHIFT_LEFT = (-JUNGLE_TILE_X_SIZE) - TILE_CONST_S
 
 const std::string pathToLevels = "./config/levels/"; 
 constexpr const char * levels[2] = { "level1raw.bin" /*,"LEVEL2"*/ };
+
 constexpr const char * charcterStateNames[7] = {
 										"main-idle.png", "main-jump.png" , "main-run-left.png"
 									 	,"main-run-right.png" , "main-hang.png" , "main-special.png"
