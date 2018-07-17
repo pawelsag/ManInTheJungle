@@ -9,7 +9,7 @@
 #include "objectManager.h"
 #include <characterObject.h>
 #include <gravitation.h>
-
+#include "textureStateManager.h"
 #ifndef GAMECONTROLLER
 #define GAMECONTROLLER
 constexpr const int POSTIVE_VELOCITY = 5;
@@ -47,6 +47,8 @@ private://members
 	rednerMachine display;
 	// main class to manage gravitation
 	gravitation gravityObject;
+	//main class to manage currently used texture for player
+	textureStateManager currentPlayerState;
 	// variabel holds currently invoked event  
 	SDL_Event event;
 	STATES globalState;
@@ -66,9 +68,9 @@ private://members
 	size_t currentRenderOffset_y, currentRenderOffset_y_copy; 
 	// variable to validate move
 	MOVE isMoveValid{MOVE::IDLE};
-	ST::CHARACTERSTATE currentPlayerState{ST::CHARACTERSTATE::IDLE};
 	// evry level starts on platform consist of 3 block of ground and 2 block of player = 5*JUNGLE_TILE_Y_SIZE
 	int playerStartOffset_x{10}, playerStartOffset_y{SCREEN_HEIGHT - 5*JUNGLE_TILE_Y_SIZE }; 
+	int playerX_Offset, playerY_Offset;
 public:
 	gameController();
 	void run();

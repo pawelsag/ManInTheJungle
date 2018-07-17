@@ -1,18 +1,25 @@
 #include "gameController.h"
 
-gameController::gameController(){
-	objectsManager = new objectManager( this->display.getRenderObject(), this->mapColCount, this->mapRowCount);
-	currentRenderOffset_x = 0 ;
-	if(objectsManager->levelSize.y < mapRowCount ){
-		mapRowCount = objectsManager->levelSize.y;
-		currentRenderOffset_y = 0;
+gameController::gameController()
+{
+	this->objectsManager = new objectManager( this->display.getRenderObject(), this->mapColCount, this->mapRowCount);
+	this->gravityObject = gravitation(this->currentPlayerState);
+	this->gravityObject.antigravityForce(2);
+
+	this->currentRenderOffset_x = 0 ;
+	this->playerX_Offset = playerStartOffset_x;
+	this->playerY_Offset = playerStartOffset_y;
+
+	if(this->objectsManager->levelSize.y < mapRowCount ){
+		this->mapRowCount = this->objectsManager->levelSize.y;
+		this->currentRenderOffset_y = 0;
 	}else{
 		// render max visible screen size
 		// in case map is smaller than screen
-		currentRenderOffset_y = objectsManager->levelSize.y - mapRowCount ;
+		this->currentRenderOffset_y = this->objectsManager->levelSize.y - mapRowCount ;
 	}
 
-	currentRenderOffset_y_copy =currentRenderOffset_y;
+	this->currentRenderOffset_y_copy = this->currentRenderOffset_y;
 	printf("%i %i \n",this->mapColCount,this->mapRowCount );
 }
 
@@ -32,44 +39,46 @@ void gameController::run(){
 				case SDL_QUIT:
 					printf("QUITING \n");
 					globalState = STATES::QUIT;
-					gravityObject.appActive = false;
+					this->gravityObject.appActive = false;
 				break;
 			}
 		}
 		isMoveValid = this->validateMove();
 
 		if( isMoveValid & MOVE_X_VALID  ){
-			absolutePositionX += velocityHorizontal;
-			if( absolutePositionX > -250 ){
-				playerStartOffset_x = -absolutePositionX+10;
-				jungleTilePosition_x =0;
+			this->absolutePositionX += this->velocityHorizontal;
+			if( this->absolutePositionX > -300 ){
+				this->playerX_Offset = -this->absolutePositionX + this->playerStartOffset_x;
+				this->jungleTilePosition_x = 0;
 			}else{
-				jungleTilePosition_x += velocityHorizontal;	
+				this->jungleTilePosition_x += this->velocityHorizontal;	
 
-				if(jungleTilePosition_x < -JUNGLE_TILE_X_SIZE ){
-					currentRenderOffset_x++;
-					jungleTilePosition_x = TILE_CONST_SHIFT_RIGHT;
-				}else if(jungleTilePosition_x > 0  ){
-					currentRenderOffset_x--;
-					jungleTilePosition_x = TILE_CONST_SHIFT_LEFT;
+				if(this->jungleTilePosition_x < -JUNGLE_TILE_X_SIZE ){
+					this->currentRenderOffset_x++;
+					this->jungleTilePosition_x = TILE_CONST_SHIFT_RIGHT;
+				}else if(this->jungleTilePosition_x > 0  ){
+					this->currentRenderOffset_x--;
+					this->jungleTilePosition_x = TILE_CONST_SHIFT_LEFT;
 				}
 			}			
 		}
 		
+		this->playerY_Offset  = this->playerStartOffset_y +  this->gravityObject.getHeight();
+
 		if( isMoveValid & MOVE_Y_VALID ){
-			absolutePositionY += velocityVertical;
-			jungleTilePosition_y += velocityVertical;
+			this->absolutePositionY += this->velocityVertical;
+			this->jungleTilePosition_y += this->velocityVertical;
 
-			if(jungleTilePosition_y > JUNGLE_TILE_Y_SIZE ){
-				currentRenderOffset_y_copy--;
-				jungleTilePosition_y = -TILE_CONST_SHIFT_RIGHT ;
+			if(this->jungleTilePosition_y > JUNGLE_TILE_Y_SIZE ){
+				this->currentRenderOffset_y_copy--;
+				this->jungleTilePosition_y = -TILE_CONST_SHIFT_RIGHT ;
 
-			}else if(jungleTilePosition_y < 0 ){
-				currentRenderOffset_y_copy++;
-				jungleTilePosition_y = -TILE_CONST_SHIFT_LEFT ;
+			}else if(this->jungleTilePosition_y < 0 ){
+				this->currentRenderOffset_y_copy++;
+				this->jungleTilePosition_y = -TILE_CONST_SHIFT_LEFT ;
 			}
 		}
-		playerStartOffset_y = gravityObject.getHeight();
+
 		this->display.clear();
 		this->updateObjectsPosition();
 		this->display.repaint();
@@ -82,22 +91,24 @@ void gameController::makeMove(SDL_Keycode & keyID){
 	switch(keyID){
 		case SDLK_LEFT:
 		velocityHorizontal = ::velocity;
-		currentPlayerState = ST::CHARACTERSTATE::RUNLEFT;
+		currentPlayerState.setState( ST::CHARACTERSTATE::RUNLEFT );
+		currentPlayerState.saveState( ST::CHARACTERSTATE::RUNLEFT );
 		printf("Left pressed\n" );
 		break;
 		case SDLK_RIGHT:
 		printf("right pressed\n" );
-		currentPlayerState = ST::CHARACTERSTATE::RUNRIGHT;
+		currentPlayerState.setState( ST::CHARACTERSTATE::RUNRIGHT );
+		currentPlayerState.saveState( ST::CHARACTERSTATE::RUNRIGHT );
 		velocityHorizontal = -::velocity;
 		break;
 		case SDLK_UP:
 		printf("up pressed\n");
-		currentPlayerState = ST::CHARACTERSTATE::JUMP;
-		gravityObject.antigravityForce(2);
+		currentPlayerState.setState( ST::CHARACTERSTATE::JUMP);
+		gravityObject.activateForce();
 		break;
 		case SDLK_DOWN:
 		printf("down pressed\n");
-		currentPlayerState = ST::CHARACTERSTATE::LANDING;
+		currentPlayerState.setState( ST::CHARACTERSTATE::LANDING);
 		velocityVertical = -::velocity;
 		break;
 	}
@@ -111,6 +122,8 @@ void gameController::clearMove(SDL_Keycode & keyID){
 		case SDLK_LEFT:
 		case SDLK_RIGHT:
 		printf("right/left released\n" );
+		currentPlayerState.setState( ST::CHARACTERSTATE::IDLE);
+		currentPlayerState.saveState( ST::CHARACTERSTATE::IDLE);
 		velocityHorizontal = 0;
 		break;
 		case SDLK_UP:
@@ -119,13 +132,12 @@ void gameController::clearMove(SDL_Keycode & keyID){
 		velocityVertical = 0;
 		break;
 	}
-	currentPlayerState = ST::CHARACTERSTATE::IDLE;
 }
 
 void gameController::updateObjectsPosition(){
 	// render bacground
 	for(auto &object : objectsManager->BackgroundObjects){
-		if(absolutePositionX < -250)
+		if(absolutePositionX < -300)
 			object->updatePosition(velocityHorizontal,velocityVertical);
 		else
 			object->updatePosition(0,velocityVertical);
@@ -142,6 +154,7 @@ void gameController::updateObjectsPosition(){
 		this->objectsManager->visibleRenderTiles[i].setPosition(
 			col*40 + jungleTilePosition_x ,
 			row*40 + jungleTilePosition_y);
+
 		display.appendObject(&this->objectsManager->visibleRenderTiles[i]);
 		col++;
 
@@ -150,12 +163,13 @@ void gameController::updateObjectsPosition(){
 			currentRenderOffset_y++;
 			row++;
 		}
-	}
-	// render main player
-	auto player =  objectsManager->getPlayerTextureInGivenState(currentPlayerState);
-	player->setPosition(playerStartOffset_x, playerStartOffset_y);
-	display.appendObject( player );	
 
+	}
+
+	// render main player
+	auto player =  objectsManager->getPlayerTextureInGivenState(currentPlayerState.getState());
+	player->setPosition(playerX_Offset, playerY_Offset);
+	display.appendObject( player );	
 }
 
 gameController::MOVE gameController::validateMove(){

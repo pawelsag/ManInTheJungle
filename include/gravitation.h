@@ -1,35 +1,53 @@
 #ifndef GRAVITATION
 #define GRAVITATION
-#include <thread>
+#include <vector>
+#include "textureStateManager.h"
+
 class gameController;
 
-constexpr const int gravityConstant =-10; 
+constexpr const int gravityValuesCount =20;
+
 class gravitation
 {
 	friend class gameController; 
-	int velocity{ gravityConstant };
-	int height{0};
+	int counter{0};
 	int forceStrength{0};
 	bool counterForceActive{ false },appActive{true};
-	std::thread gravityThread;
+	textureStateManager * stateInstancePtr;	
+	std::vector<int> height;
 public:
-	gravitation();
-	~gravitation();
+	gravitation()=default;
+	gravitation(textureStateManager & stateObject);
+	~gravitation()=default;
 	
-	void run();
+	void antigravityForce(int strength);
 
-	inline void antigravityForce(int strength){
-		if(counterForceActive != true){
-			this->forceStrength = strength;
-			counterForceActive = true;
-		}
-	}
 	inline int  gravityEqeuation(int x) {
 		return (x-10)*(x+10)*this->forceStrength ;
 	}
-	inline int getHeight(){
-		return this->height +400;
+
+	inline void activateForce(){
+		this->counterForceActive = true;
 	}
+
+	inline int getHeight(){
+		if(this->counterForceActive == false)
+			return 0;
+		if(this->counter > 11)
+			this->stateInstancePtr->currentPlayerState = ST::CHARACTERSTATE::JUMP;
+		else
+			this->stateInstancePtr->currentPlayerState = ST::CHARACTERSTATE::LANDING;
+
+		if( this->counter > 20 ){
+			this->counter = 0;
+			this->counterForceActive = false;
+			this->stateInstancePtr->restoreState();
+
+		}
+
+		return this->height[this->counter++];
+	}
+
 };
 
 #endif
