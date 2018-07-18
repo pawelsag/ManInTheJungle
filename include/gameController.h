@@ -2,14 +2,17 @@
 #include <SDL2/SDL.h>
 #include <chrono>
 #include <thread>
+#include <characterObject.h>
+#include <gravitation.h>
+
 #include "BackgroundObject.h"
 #include "rednerMachine.h"
 #include "globalSettings.h"
 #include "customTypes.h"
 #include "objectManager.h"
-#include <characterObject.h>
-#include <gravitation.h>
 #include "textureStateManager.h"
+#include "eventManager.h"
+
 #ifndef GAMECONTROLLER
 #define GAMECONTROLLER
 constexpr const int POSTIVE_VELOCITY = 5;
@@ -47,11 +50,10 @@ private://members
 	rednerMachine display;
 	// main class to manage gravitation
 	gravitation gravityObject;
-	//main class to manage currently used texture for player
+	// main class to manage currently used texture for player
 	textureStateManager currentPlayerState;
-	// variabel holds currently invoked event  
-	SDL_Event event;
-	STATES globalState;
+	// main class to manage icomming events  
+	eventManager *event;
 	// variabels keep info about currently set speed
 	int velocityHorizontal{ 0 };
 	int velocityVertical{ 0 };
@@ -78,8 +80,8 @@ public:
 private: // methods
 	void loadTextures();
 	MOVE validateMove();
-	void makeMove( SDL_Keycode & keyID );
-	void clearMove( SDL_Keycode & keyID );
+	void checkMove( );
+
 	void updateObjectsPosition();
 
 	

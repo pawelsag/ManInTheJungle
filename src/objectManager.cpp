@@ -97,6 +97,8 @@ void objectManager::loadLevel(){
 
 void objectManager::loadMainCharacter(){
 	// main charater object vector with given states
+	// update this vector with names proper charcterStateNames based on settings
+	// in global Settings file
 	std::vector<ST::CHARACTERSTATE_INFO> characterTextureState = 
 	{
 		ST::CHARACTERSTATE_INFO(charcterStateNames[0],ST::CHARACTERSTATE::IDLE,12,19,34),
@@ -106,6 +108,9 @@ void objectManager::loadMainCharacter(){
 		ST::CHARACTERSTATE_INFO(charcterStateNames[4],ST::CHARACTERSTATE::HANG,5,21,41),
 		ST::CHARACTERSTATE_INFO(charcterStateNames[5],ST::CHARACTERSTATE::SPECIAL,2,20,35),
 		ST::CHARACTERSTATE_INFO(charcterStateNames[6],ST::CHARACTERSTATE::LANDING,1,20,35),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[7],ST::CHARACTERSTATE::JUMPLEFT,1,17,34),
+		ST::CHARACTERSTATE_INFO(charcterStateNames[8],ST::CHARACTERSTATE::LANDINGLEFT,1,20,35),
+
 	};
 	// when above vecor change states, this LookUp table have to be updated
 	stateLookUpTable[ST::CHARACTERSTATE::IDLE] = 0;
@@ -115,6 +120,8 @@ void objectManager::loadMainCharacter(){
 	stateLookUpTable[ST::CHARACTERSTATE::HANG] = 4;
 	stateLookUpTable[ST::CHARACTERSTATE::SPECIAL] = 5;
 	stateLookUpTable[ST::CHARACTERSTATE::LANDING] = 6;
+	stateLookUpTable[ST::CHARACTERSTATE::JUMPLEFT] = 7;
+	stateLookUpTable[ST::CHARACTERSTATE::LANDINGLEFT] = 8;
 
 	int i =0;
 	for(auto & st : characterTextureState){

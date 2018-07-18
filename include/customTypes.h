@@ -123,6 +123,10 @@ namespace ST{
 		RUNRIGHT,
 		LANDING,
 		HANG,
+		JUMPLEFT,
+		LANDINGLEFT,
+		//special must be last stet in this enum type
+		// becouse based on him i count amount of elemnts in enum type
 		SPECIAL
 	};
 	constexpr const int STATE_COUNT = CHARACTERSTATE::SPECIAL + 1; 

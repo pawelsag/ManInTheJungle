@@ -139,5 +139,4 @@ void renderObject::updatePosition(int x, int y){
 }
 
 renderObject::~renderObject(){
-
 }

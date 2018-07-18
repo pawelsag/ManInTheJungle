@@ -21,31 +21,13 @@ public:
 	~gravitation()=default;
 	
 	void antigravityForce(int strength);
-
+	int getHeight();
 	inline int  gravityEqeuation(int x) {
 		return (x-10)*(x+10)*this->forceStrength ;
 	}
 
 	inline void activateForce(){
 		this->counterForceActive = true;
-	}
-
-	inline int getHeight(){
-		if(this->counterForceActive == false)
-			return 0;
-		if(this->counter > 11)
-			this->stateInstancePtr->currentPlayerState = ST::CHARACTERSTATE::JUMP;
-		else
-			this->stateInstancePtr->currentPlayerState = ST::CHARACTERSTATE::LANDING;
-
-		if( this->counter > 20 ){
-			this->counter = 0;
-			this->counterForceActive = false;
-			this->stateInstancePtr->restoreState();
-
-		}
-
-		return this->height[this->counter++];
 	}
 
 };

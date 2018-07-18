@@ -4,8 +4,8 @@ gameController::gameController()
 {
 	this->objectsManager = new objectManager( this->display.getRenderObject(), this->mapColCount, this->mapRowCount);
 	this->gravityObject = gravitation(this->currentPlayerState);
-	this->gravityObject.antigravityForce(2);
-
+	this->event = new eventManager(this->currentPlayerState);
+	this->gravityObject.antigravityForce(1);
 	this->currentRenderOffset_x = 0 ;
 	this->playerX_Offset = playerStartOffset_x;
 	this->playerY_Offset = playerStartOffset_y;
@@ -25,24 +25,10 @@ gameController::gameController()
 
 void gameController::run(){
 
-	while(globalState != STATES::QUIT){
-		while(SDL_PollEvent( &this->event ) != 0){
-			switch(this->event.type){
-				case SDL_KEYDOWN :
-					printf("KeyDown \n");
-					this->makeMove(this->event.key.keysym.sym);
-				break;
-				case SDL_KEYUP:
-					printf("KeyUP \n");
-					this->clearMove(this->event.key.keysym.sym);
-				break;
-				case SDL_QUIT:
-					printf("QUITING \n");
-					globalState = STATES::QUIT;
-					this->gravityObject.appActive = false;
-				break;
-			}
-		}
+	while( !event->isAboutToExit ){
+		
+		this->checkMove();
+
 		isMoveValid = this->validateMove();
 
 		if( isMoveValid & MOVE_X_VALID  ){
@@ -86,52 +72,21 @@ void gameController::run(){
 	}
 }
 
-void gameController::makeMove(SDL_Keycode & keyID){
-	
-	switch(keyID){
-		case SDLK_LEFT:
-		velocityHorizontal = ::velocity;
-		currentPlayerState.setState( ST::CHARACTERSTATE::RUNLEFT );
-		currentPlayerState.saveState( ST::CHARACTERSTATE::RUNLEFT );
-		printf("Left pressed\n" );
-		break;
-		case SDLK_RIGHT:
-		printf("right pressed\n" );
-		currentPlayerState.setState( ST::CHARACTERSTATE::RUNRIGHT );
-		currentPlayerState.saveState( ST::CHARACTERSTATE::RUNRIGHT );
-		velocityHorizontal = -::velocity;
-		break;
-		case SDLK_UP:
-		printf("up pressed\n");
-		currentPlayerState.setState( ST::CHARACTERSTATE::JUMP);
-		gravityObject.activateForce();
-		break;
-		case SDLK_DOWN:
-		printf("down pressed\n");
-		currentPlayerState.setState( ST::CHARACTERSTATE::LANDING);
-		velocityVertical = -::velocity;
-		break;
-	}
+void gameController::checkMove(){
+			// if left pressed set velocity
+		if(this->event->isLeftPressed){
+			velocityHorizontal = ::velocity;
+			// if right pressed set velocity
+		}else if(this->event->isRightPressed){
+			velocityHorizontal = -::velocity;
+			// otherwise reset velocity
+		}else
+			velocityHorizontal = 0;
 
-}
-
-
-void gameController::clearMove(SDL_Keycode & keyID){
-
-	switch( keyID ){
-		case SDLK_LEFT:
-		case SDLK_RIGHT:
-		printf("right/left released\n" );
-		currentPlayerState.setState( ST::CHARACTERSTATE::IDLE);
-		currentPlayerState.saveState( ST::CHARACTERSTATE::IDLE);
-		velocityHorizontal = 0;
-		break;
-		case SDLK_UP:
-		case SDLK_DOWN:
-		printf("up rellased\n" );
-		velocityVertical = 0;
-		break;
-	}
+			// if key up pressed make jump
+		if(this->event->isKeyUpPressed)
+			gravityObject.activateForce();
+			
 }
 
 void gameController::updateObjectsPosition(){
@@ -191,5 +146,6 @@ gameController::MOVE gameController::validateMove(){
 }
 
 gameController::~gameController(){
-	delete objectsManager;
+	delete this->objectsManager;
+	delete this->event;
 }
