@@ -28,7 +28,7 @@ void objectManager::loadBackground(){
 	auto backgroundSize =BackgroundObjects.size();
 	
 	for(size_t i =0 ; i < backgroundSize; i++){
-		// make copy of loaded texture
+		// make pointer copy of loaded texture
 		this->BackgroundObjects.push_back(new BackgroundObject( this->BackgroundObjects[i] ) );
 		// set new position
 		this->BackgroundObjects[ i + backgroundSize ]->setPosition(SCREEN_WIDTH,-200);
@@ -67,27 +67,26 @@ void objectManager::loadLevel(){
 			case 0x0:
 			cropedTexture.x = 0;
 			cropedTexture.y = 0;
-			JungleTilesInfo.push_back( JungleTilesSettings( 0x0,cropedTexture ) );
+			JungleTilesInfo.push_back( JungleTilesSettings( 0x0,cropedTexture, false ) );
 			break;
 			case 0x76:
 			//light ground	
 			cropedTexture.x = 30;
 			cropedTexture.y = 30;
-			JungleTilesInfo.push_back( JungleTilesSettings(0x76,cropedTexture) );
+			JungleTilesInfo.push_back( JungleTilesSettings(0x76,cropedTexture, true) );
 
 			break;
 			case 0xEB:
 			//dark ground
 			cropedTexture.x = 30;
 			cropedTexture.y = 42;
-			JungleTilesInfo.push_back( JungleTilesSettings(0xEB,cropedTexture) );
+			JungleTilesInfo.push_back( JungleTilesSettings(0xEB,cropedTexture, true) );
 			break;
 			case 0x46:
 			// lawn
 			cropedTexture.x = 30;
 			cropedTexture.y = 18;
-			JungleTilesInfo.push_back( JungleTilesSettings(0x46,cropedTexture) );
-
+			JungleTilesInfo.push_back( JungleTilesSettings(0x46,cropedTexture, true));
 			break;
 
 		}
@@ -125,7 +124,7 @@ void objectManager::loadMainCharacter(){
 
 	int i =0;
 	for(auto & st : characterTextureState){
-		MainPlayerObjects[i] = characterObject(0,0,60,80,st.State) ;
+		MainPlayerObjects[i] = characterObject(0,0,40,80,st.State) ;
 		MainPlayerObjects[i].loadTexturesFromFile(std::string(pathToCharacter) + st.TextureName,render_Object);
 		MainPlayerObjects[i].generateCropArea(st.n,st.w,st.h);
 		i++;

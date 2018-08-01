@@ -9,10 +9,11 @@ gravitation::gravitation(textureStateManager & stateObject){
 void gravitation::antigravityForce(int strength){
 	if(counterForceActive != true){
 		this->forceStrength = strength;
-		this->height.clear();
+		this->playerHeight.clear();
+		
 		for(int x = -10, k=0; k <= gravityValuesCount; x++, k++ )
-			height.push_back( gravityEqeuation( x ) );
-	}
+			playerHeight.push_back( gravityEqeuation( x ) );
+	}	
 }
 
 int gravitation::getHeight(){
@@ -26,10 +27,12 @@ int gravitation::getHeight(){
 
 	if( this->counter > 20 ){
 		this->counter = 0;
+		this->colision = true;
 		this->counterForceActive = false;
 		this->stateInstancePtr->restoreState();
-
+		return 0;
 	}
 
-	return this->height[this->counter++];
+	return this->playerHeight[this->counter++];
 }
+

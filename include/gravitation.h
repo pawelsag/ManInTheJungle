@@ -2,19 +2,21 @@
 #define GRAVITATION
 #include <vector>
 #include "textureStateManager.h"
-
+#include <stdio.h>
 class gameController;
 
 constexpr const int gravityValuesCount =20;
 
 class gravitation
 {
-	friend class gameController; 
+	friend class gameController;
+
 	int counter{0};
-	int forceStrength{0};
-	bool counterForceActive{ false },appActive{true};
+	float forceStrength{0};
+	bool counterForceActive{ false },colision{true};
 	textureStateManager * stateInstancePtr;	
-	std::vector<int> height;
+	std::vector<int> playerHeight;
+
 public:
 	gravitation()=default;
 	gravitation(textureStateManager & stateObject);
@@ -22,12 +24,32 @@ public:
 	
 	void antigravityForce(int strength);
 	int getHeight();
-	inline int  gravityEqeuation(int x) {
-		return (x-10)*(x+10)*this->forceStrength ;
+
+	inline float gravityEqeuation(int x) {
+		// a(x-10)(x+10)
+		return this->forceStrength * (x-10)*(x+10) ;
 	}
 
 	inline void activateForce(){
 		this->counterForceActive = true;
+		
+	}
+
+	inline int getCameraVelocity(){
+		if(this->counterForceActive == false  )
+			return 0;	
+		if(this->counter < 11 )
+			return 10;
+		else 
+			return -10;
+		
+	}
+	inline void playerColide(){
+		if( colision ){
+			this->counter = this->playerHeight.size() - this->counter;
+			this->colision = false;
+			printf("Colision %i\n",this->counter);
+		}
 	}
 
 };

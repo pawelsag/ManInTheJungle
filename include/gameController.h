@@ -31,7 +31,8 @@ class gameController
 		MOVE_X_VALID=1,
 		MOVE_Y_VALID=2,
 		MOVE_X_INVALID=4,
-		MOVE_Y_INVALID=8
+		MOVE_Y_INVALID=8,
+		MOVE_DOWN_INVAID =16,
 
 	};
 	inline friend MOVE operator |(MOVE a, MOVE b)
@@ -58,8 +59,11 @@ private://members
 	int velocityHorizontal{ 0 };
 	int velocityVertical{ 0 };
 	// main values, that follow main camera position
-	int absolutePositionX{ 0 };
-	int absolutePositionY{ 0 };
+	int cameraPositionX{ 0 };
+	int cameraPositionY{ 0 };
+	// hold copy of next player move
+	int preX_Move{ 0 };
+	int preY_Move{ 0 };
 	// variables holds information about tiles render position
 	int jungleTilePosition_x{0}, jungleTilePosition_y{0};
 	// we need 1 extra column rendered bacause when we have to fill the gap on the edge of screen
@@ -78,13 +82,13 @@ public:
 	void run();
 	~gameController();
 private: // methods
-	void loadTextures();
-	MOVE validateMove();
-	void checkMove( );
-
+	
 	void updateObjectsPosition();
 
+	MOVE validateMove();
+	bool isPlayerInObstacle(MOVE &state);
 	
+	void checkMove( );
 
 };
 

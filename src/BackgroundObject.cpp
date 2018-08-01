@@ -38,8 +38,9 @@ BackgroundObject::BackgroundObject(TextureRenderPosition &positionInfo, SDL_Rect
 }
 
 void BackgroundObject::updatePosition(int x, int y){
+	// this realy suck
+	this->position.x_offset += x ;
 	
-	this->position.x_offset += x;
 	this->position.y_offset += y;
 	
 	// printf("%i\n", this->position.y_offset);

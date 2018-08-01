@@ -2,8 +2,8 @@ import struct
 import os
 import array
 
-pathToLevel = "C:\SDLPRojects\SDL GAME\config\\" 
-pathToLevelProcess = "C:\SDLPRojects\SDL GAME\config\levels\\" 
+pathToLevel = "../config/" 
+pathToLevelProcess = "../config/levels/" 
 def decodeLevel(readFileName, writeFileName):
 	k=[]
 
