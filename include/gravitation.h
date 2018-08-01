@@ -32,12 +32,16 @@ public:
 
 	inline void activateForce(){
 		this->counterForceActive = true;
-		
+	}
+	
+	inline const bool isForceActive()const{
+		return this->counterForceActive && (this->counter < 11);
 	}
 
 	inline int getCameraVelocity(){
 		if(this->counterForceActive == false  )
-			return 0;	
+			return -20;
+		// printf("%i \n", this->counter );		
 		if(this->counter < 11 )
 			return 10;
 		else 
@@ -46,12 +50,15 @@ public:
 	}
 	inline void playerColide(){
 		if( colision ){
-			this->counter = this->playerHeight.size() - this->counter;
+			this->counter = (this->playerHeight.size() - this->counter);
+			if(this->counter < 10)
+				this->counter = this->playerHeight.size() - this->counter;
+			this-> counter+=2;
 			this->colision = false;
 			printf("Colision %i\n",this->counter);
 		}
 	}
 
-};
+}; 
 
 #endif

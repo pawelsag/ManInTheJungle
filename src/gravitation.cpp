@@ -11,8 +11,9 @@ void gravitation::antigravityForce(int strength){
 		this->forceStrength = strength;
 		this->playerHeight.clear();
 		
-		for(int x = -10, k=0; k <= gravityValuesCount; x++, k++ )
+		for(int x = -10, k=0; k <= gravityValuesCount; x++, k++ ){
 			playerHeight.push_back( gravityEqeuation( x ) );
+		}
 	}	
 }
 
@@ -20,7 +21,7 @@ int gravitation::getHeight(){
 	if(this->counterForceActive == false)
 		return 0;
 
-	if(this->counter > 11)
+	if(this->counter < 11)
 		this->stateInstancePtr->currentPlayerState = this->stateInstancePtr->jumpDirection;
 	else
 		this->stateInstancePtr->currentPlayerState = this->stateInstancePtr->landingDirection;

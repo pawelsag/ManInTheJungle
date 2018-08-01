@@ -32,7 +32,7 @@ class gameController
 		MOVE_Y_VALID=2,
 		MOVE_X_INVALID=4,
 		MOVE_Y_INVALID=8,
-		MOVE_DOWN_INVAID =16,
+		MOVE_DOWN_INVALID =16,
 
 	};
 	inline friend MOVE operator |(MOVE a, MOVE b)
@@ -87,8 +87,15 @@ private: // methods
 
 	MOVE validateMove();
 	bool isPlayerInObstacle(MOVE &state);
-	
 	void checkMove( );
+
+	// some function to validate move correctnes
+
+	bool validateMoveLeft(MOVE &state);
+	bool validateMoveRight(MOVE &state);
+	bool validateMoveUp(MOVE &state);
+	bool validateMoveDown(MOVE &state);
+
 
 };
 

@@ -39,11 +39,11 @@ BackgroundObject::BackgroundObject(TextureRenderPosition &positionInfo, SDL_Rect
 
 void BackgroundObject::updatePosition(int x, int y){
 	// this realy suck
-	this->position.x_offset += x ;
+	this->position.x_offset =this->position.x_beginOffset + x % SCREEN_WIDTH ;
 	
-	this->position.y_offset += y;
+	this->position.y_offset =this->position.y_beginOffset + y % SCREEN_HEIGHT ;
 	
-	// printf("%i\n", this->position.y_offset);
+	// printf("%i\n", this->position.x_offset);
 	if(this->position.x_offset <= -SCREEN_WIDTH ){
 		this->position.x_offset = SCREEN_WIDTH  ;
 	}

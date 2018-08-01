@@ -76,15 +76,15 @@ public:
 		position.y_offset =y;
 	}	
 	inline void setBeginPosition(int x, int y){
-		int &x_WC =  const_cast<int&>(this->position.x_beginOffset);
-		x_WC = x;
+		this->position.x_beginOffset = x;
+		this->position.y_beginOffset = y;
 
-		int &y_WC =  const_cast<int&>(this->position.y_beginOffset);
-		y_WC = y;
 	}
+
 	inline void setPosition(TextureRenderPosition &positionInfo){
 		this->position = positionInfo;
 	}
+	
 	inline void resetRenderedFrame(){
 		this->cropId = 0 ;
 		this->renderTxtId =0;

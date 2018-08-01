@@ -6,7 +6,7 @@
 
 struct TextureRenderPosition{
 	int x_offset, y_offset;
-	const int x_beginOffset, y_beginOffset;
+	int x_beginOffset, y_beginOffset;
 	int width, height;
 	bool readyToRender;
 	//default contructor 
@@ -51,12 +51,10 @@ struct TextureRenderPosition{
 	 {
 		if(this == &pos )
 			return *this;
-		// remove const and assign value
-		int &x =  const_cast<int&>(this->x_beginOffset);
-		x = pos.x_beginOffset;
+		
+		this->x_beginOffset = pos.x_beginOffset;
 
-		int &y =  const_cast<int&>(this->y_beginOffset);
-		y = pos.y_beginOffset;
+		this->y_beginOffset = pos.y_beginOffset;
 
 		x_offset = pos.x_offset;
 		y_offset = pos.y_offset;
@@ -70,12 +68,9 @@ struct TextureRenderPosition{
 		x_offset = pos.x_offset;
 		y_offset = pos.y_offset;
 
-		// remove const and assign value
-		int &x =  const_cast<int&>(this->x_beginOffset);
-		x = pos.x_beginOffset;
+		this->x_beginOffset = pos.x_beginOffset;
 
-		int &y =  const_cast<int&>(this->y_beginOffset);
-		y = pos.y_beginOffset;
+		this->y_beginOffset = pos.y_beginOffset;
 
 		width = pos.width;
 		height = pos.height;
@@ -145,6 +140,7 @@ namespace ST{
 		:TextureName(name),State(state),n(_n),w(_w),h(_h){}
 	};
 };
+
 struct containerSize{
 	size_t x,y;
 };

@@ -3,6 +3,9 @@
 // gravity object will prepare tile offset values
 // back to old creapy rendering background
 // all for now
+int x,y;
+bool isObstacle;
+
 gameController::gameController()
 {
 	this->objectsManager = new objectManager( this->display.getRenderObject(), this->mapColCount, this->mapRowCount);
@@ -69,7 +72,7 @@ void gameController::run(){
 			}
 		}
 	
-		// printf("%i\n",this->cameraPositionY );
+		// printf("%i\n",this->playerY_Offset );
 		this->display.clear();
 		this->updateObjectsPosition();
 		this->display.repaint();
@@ -97,15 +100,25 @@ void gameController::checkMove(){
 
 void gameController::updateObjectsPosition(){
 	// render bacground
+	printf("%i\n",this->cameraPositionY);
+	int tmp_x_pos, tmp_y_pos;
+
 	for(auto &object : objectsManager->BackgroundObjects){
-		if ((this->isMoveValid & MOVE_Y_INVALID))			
-			object->updatePosition(velocityHorizontal,0);
-		else if(cameraPositionX < -300)
-			object->updatePosition(velocityHorizontal,this->velocityVertical);
+
+		if( this ->cameraPositionY < 0 )
+			tmp_y_pos = 200;
 		else
-			object->updatePosition(0, this->velocityVertical);
+			tmp_y_pos = -this->cameraPositionY +200;
+
+		if (cameraPositionX > -300)
+			tmp_x_pos = 0;
+		else
+			tmp_x_pos = this->cameraPositionX - 300;
+		
+		object->updatePosition(tmp_x_pos, tmp_y_pos);
 
 		display.appendObject(object);
+
 	}
 	// render loaded map level 
 	for(size_t i = 0, row = 0 , col = 0,currentRenderOffset_y = currentRenderOffset_y_copy ; i < jungleItemsCount ; i++){
@@ -142,19 +155,16 @@ gameController::MOVE gameController::validateMove(){
 	if( preX_Move + this->velocityHorizontal > 0 ){
 		state |= MOVE::MOVE_X_INVALID;
 		velocityHorizontal =0;
-		return state;
 	}else
 		preX_Move += this->velocityHorizontal;
 
 	// check if map can be moved vertcaly 
-	if( false ){
-		state |= MOVE::MOVE_Y_INVALID;
-	}else
-		this->velocityVertical = this->gravityObject.getCameraVelocity();
+
+	this->velocityVertical = this->gravityObject.getCameraVelocity();
 
 	this->preY_Move = this->playerStartOffset_y + this->gravityObject.getHeight();
-	printf("%i\n",this->preY_Move);
 	this->isPlayerInObstacle(state);
+
 	return state;
 }
 
@@ -162,14 +172,15 @@ gameController::MOVE gameController::validateMove(){
 // object to collide with. 
 bool gameController::isPlayerInObstacle(MOVE &state){
 	// position of left-up corrner of player
-	
 	//	player size : 60 x 80
-	
 	// get x postion of player 
-	int x = -( (this->preX_Move) /JUNGLE_TILE_X_SIZE);
+	x = -( (this->preX_Move-10) /JUNGLE_TILE_X_SIZE);
 	// get y postion of player
-	int y = ((this->preY_Move +20 )/JUNGLE_TILE_Y_SIZE) +currentRenderOffset_y_copy ;
+	y = ((this->preY_Move +20 )/JUNGLE_TILE_Y_SIZE) + currentRenderOffset_y_copy ;
+	// variable holds temporary result of validated tile
+	isObstacle = false;
 	printf("%i %i\n",x, y );
+	
 	// x x x 
 	// X T x <- starts here and go down
 	// X P x   
@@ -177,94 +188,159 @@ bool gameController::isPlayerInObstacle(MOVE &state){
 	// T - points to players (x,y)(letf- upper) 
 	// P - player texture
 	// x - other level map object
-	//     potentially obstacle 
-	
-	// validate if player can move right
+	// -.- potentially obstacle 
 
-	bool isObstacle = objectsManager->getJungleTileInfo(
-			objectsManager->mapLevel[ (y) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
-									+ (x+1) ] ).isObstacle;
+	if(this->event->isRightPressed)
+		if(this->validateMoveRight(state) == false ){
+			// if player move right and hit the wall 
+			// it is impossible to hit the wall on his upper-right side
+		    isObstacle = objectsManager->getJungleTileInfo(
+				objectsManager->mapLevel[ (y-1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
+										+ (x) ] ).isObstacle;
+		}else
+			isObstacle = false;
+
+	else if(this->event->isLeftPressed)
+		if(this->validateMoveLeft(state) == false ){
+			// if player move left and hit the wall 
+			// it is impossible to hit the wall on his upper-right side
+		    isObstacle = objectsManager->getJungleTileInfo(
+				objectsManager->mapLevel[ (y-1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
+										+ (x+1) ] ).isObstacle;
+		}else
+			isObstacle = false;
+
 	if( isObstacle ){
-		state |= MOVE::MOVE_X_INVALID;
-		goto validateVertical;
-	}
-
-	isObstacle = objectsManager->getJungleTileInfo(
-			objectsManager->mapLevel[ (y+1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
-									+ (x+1) ] ).isObstacle;
-	if( isObstacle ){
-		state |= MOVE::MOVE_X_INVALID;	
-		goto validateVertical;
-	}
-
-	// validate right corners
-	isObstacle = objectsManager->getJungleTileInfo(
-			objectsManager->mapLevel[ (y-1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
-									+ (x+1) ] ).isObstacle;
-	// if( isObstacle ){
-	// 	state |= MOVE::MOVE_X_INVALID;
-	// 	state |= MOVE::MOVE_Y_INVALID;
-	// 	printf("Corner detected\n");		
-	// 	goto validateVertical;
-	// }
-
-
-	// validate if player can move left
-
-	isObstacle = objectsManager->getJungleTileInfo(
-			objectsManager->mapLevel[ (y) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
-									+ (x-1) ] ).isObstacle;
-	if( isObstacle ){
-		state |= MOVE::MOVE_X_INVALID;	
-		goto validateVertical;
-	}
-
-	isObstacle = objectsManager->getJungleTileInfo(
-			objectsManager->mapLevel[ (y+1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
-									+ (x-1) ] ).isObstacle;
-	if( isObstacle ){
-		state |= MOVE::MOVE_X_INVALID;
-		goto validateVertical;
-	}
-	
-	// validate left corners
-	isObstacle = objectsManager->getJungleTileInfo(
-			objectsManager->mapLevel[ (y-1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
-									+ (x-1) ] ).isObstacle;
-	if( isObstacle ){
-		state |= MOVE::MOVE_X_INVALID;
 		state |= MOVE::MOVE_Y_INVALID;
-		goto validateVertical;
+		goto validateVertical_AFTER_CRUSH;
 	}
 
-
+	// if you are here the x move was valid, or there wasn't any move
 	state |= MOVE::MOVE_X_VALID;
-	// now validate vertical blocks 	
-	validateVertical:;
-	//validate if player can move 
+
+	
+	// now validate vertical moves  	
+	if( this->gravityObject.isForceActive() )
+		if( this->validateMoveUp(state) == false){
+
+		}else
+			isObstacle = false;
+	else
+		this->validateMoveDown(state);
+
+
+	validateVertical_AFTER_CRUSH:;
+
+	if( state & MOVE::MOVE_X_INVALID ){
+		this->velocityHorizontal = 0;
+		this->preX_Move = this->cameraPositionX ;
+		printf("Move x invalid\n");		
+	}
+
+	if( state & MOVE::MOVE_Y_INVALID){
+		this->preY_Move = this->playerY_Offset ;
+		this->gravityObject.playerColide();
+		printf("Move y invalid\n");
+
+	}else if(state & MOVE::MOVE_DOWN_INVALID){
+		this->preY_Move = this->playerY_Offset ;
+		state |= MOVE_Y_INVALID;
+	}
+
+	return true;
+}
+
+
+bool gameController::validateMoveLeft(MOVE &state){
+// validate if player can move left
+
+	isObstacle = objectsManager->getJungleTileInfo(
+			objectsManager->mapLevel[ (y) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
+									+ (x) ] ).isObstacle;
+	if( isObstacle ){
+		state |= MOVE::MOVE_X_INVALID;
+		return false;
+	}
+
+	isObstacle = objectsManager->getJungleTileInfo(
+			objectsManager->mapLevel[ (y+1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
+									+ (x) ] ).isObstacle;
+	if( isObstacle ){
+		state |= MOVE::MOVE_X_INVALID;
+		return false;
+	}
+	isObstacle = objectsManager->getJungleTileInfo(
+			objectsManager->mapLevel[ (y-1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
+									+ (x) ] ).isObstacle;
+	if( isObstacle ){
+		state |= MOVE::MOVE_X_INVALID;
+		return false;
+	}
+	return true;
+}
+
+bool gameController::validateMoveRight(MOVE &state){
+// validate if player can move right
 	isObstacle = objectsManager->getJungleTileInfo(
 			objectsManager->mapLevel[ (y-1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
 									+ (x+1) ] ).isObstacle;
 	if( isObstacle ){
-		state |= MOVE::MOVE_Y_INVALID;
+		state |= MOVE::MOVE_X_INVALID;
+		return false;
 	}
 
+
+	isObstacle = objectsManager->getJungleTileInfo(
+			objectsManager->mapLevel[ (y) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
+									+ (x+1) ] ).isObstacle;
+	if( isObstacle ){
+		state |= MOVE::MOVE_X_INVALID;
+		return false;
+	}
+
+	isObstacle = objectsManager->getJungleTileInfo(
+			objectsManager->mapLevel[ (y+1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
+									+ (x+1) ] ).isObstacle;
+	if( isObstacle ){
+		state |= MOVE::MOVE_X_INVALID;	
+		return false;
+	}
+
+	return true;
+}
+
+bool gameController::validateMoveUp(MOVE &state){
+	//validate if player can move up
+		isObstacle = objectsManager->getJungleTileInfo(
+				objectsManager->mapLevel[ (y-1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
+										+ (x+1) ] ).isObstacle;
+		if( isObstacle ){
+			state |= MOVE::MOVE_Y_INVALID;
+			return false;
+		}
+
+		isObstacle = objectsManager->getJungleTileInfo(
+				objectsManager->mapLevel[ (y-1) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
+										+ (x) ] ).isObstacle;
+		if( isObstacle ){
+			state |= MOVE::MOVE_Y_INVALID;
+			return false;
+		}
+
+	return true;
+}
+
+bool gameController::validateMoveDown(MOVE &state){
 	// validate if player can move down
 	isObstacle = objectsManager->getJungleTileInfo(
 			objectsManager->mapLevel[ (y+2) * this->objectsManager->levelSize.x  //  (200 /  JUNGLE_TILE_X_SIZE) = 5 <- y_offset in render map 
 									+ (x) ] ).isObstacle;
 	if( isObstacle ){
-		state |= MOVE::MOVE_DOWN_INVAID;		
+		state |= MOVE::MOVE_DOWN_INVALID;	
+		return false;
 	}
 
-	if( state & MOVE::MOVE_X_INVALID ){
-		this->velocityHorizontal = 0;
-		this->preX_Move = this->cameraPositionX ;		
-	}
-	if( state & MOVE::MOVE_Y_INVALID){
-		this->preY_Move = this->playerY_Offset ;
-		this->gravityObject.playerColide();
-	}
+ 	return true;
 }
 
 gameController::~gameController(){

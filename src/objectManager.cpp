@@ -124,7 +124,7 @@ void objectManager::loadMainCharacter(){
 
 	int i =0;
 	for(auto & st : characterTextureState){
-		MainPlayerObjects[i] = characterObject(0,0,40,80,st.State) ;
+		MainPlayerObjects[i] = characterObject(0,0,60,80,st.State) ;
 		MainPlayerObjects[i].loadTexturesFromFile(std::string(pathToCharacter) + st.TextureName,render_Object);
 		MainPlayerObjects[i].generateCropArea(st.n,st.w,st.h);
 		i++;
