@@ -83,6 +83,7 @@ struct JungleTilesSettings{
 	unsigned char code;
 	bool isObstacle;
 	SDL_Rect cropAreaInfo;
+	JungleTilesSettings(){}
 	JungleTilesSettings(unsigned char code, int x, int y, int w, int h, bool obstacle){
 		this->code =  code;
 		this->isObstacle = obstacle;

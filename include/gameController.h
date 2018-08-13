@@ -17,6 +17,11 @@
 #define GAMECONTROLLER
 constexpr const int POSTIVE_VELOCITY = 5;
 constexpr const int NEGATIVE_VELOCITY = -5;
+constexpr const int CAMERA_START_MOVE_X_OFFSET = 300;
+constexpr const int CAMERA_START_MOVE_Y_OFFSET = 150;
+
+constexpr const int CAMERA_START_X_OFFSET = 0;
+constexpr const int CAMERA_START_Y_OFFSET = 200;
 
 struct Point{
 	int x,y;
@@ -25,24 +30,38 @@ struct Point{
 // this class use global settings to load levels and texture from files,
 class gameController
 {
-	// movemnt statets 
+	// movement statets 
 	enum MOVE{
 		IDLE =0,
 		MOVE_X_VALID=1,
 		MOVE_Y_VALID=2,
 		MOVE_X_INVALID=4,
 		MOVE_Y_INVALID=8,
-		MOVE_DOWN_INVALID =16,
+		MOVE_Y_INVALID_IN_PROGRESS=16,
+		MOVE_DOWN_INVALID =32,
 
 	};
 	inline friend MOVE operator |(MOVE a, MOVE b)
 	{
 	    return static_cast<MOVE>(static_cast<int>(a) | static_cast<int>(b));
 	}
+	inline friend MOVE operator &(MOVE a, MOVE b)
+	{
+		return static_cast<MOVE>(static_cast<int>(a) & static_cast<int>(b));
+	}
+	inline friend MOVE operator ~(MOVE a)
+	{
+		return static_cast<MOVE>(~static_cast<int>(a));
+	}
 	inline friend MOVE& operator |=(MOVE& a, MOVE b)
 	{
 		return a= a | b;
 	}
+	inline friend MOVE& operator &=(MOVE& a, MOVE b)
+	{
+		return a= a & b;
+	}
+
 
 private://members
 	// main class which keep all loaded objects
@@ -51,6 +70,8 @@ private://members
 	rednerMachine display;
 	// main class to manage gravitation
 	gravitation gravityObject;
+	// keep actual informations about curently vertical velocity
+	gravitation::gravityDetails currentVerticalVelocity;
 	// main class to manage currently used texture for player
 	textureStateManager currentPlayerState;
 	// main class to manage icomming events  
@@ -59,8 +80,8 @@ private://members
 	int velocityHorizontal{ 0 };
 	int velocityVertical{ 0 };
 	// main values, that follow main camera position
-	int cameraPositionX{ 0 };
-	int cameraPositionY{ 0 };
+	int cameraPositionX{ CAMERA_START_X_OFFSET };
+	int cameraPositionY{ CAMERA_START_Y_OFFSET };
 	// hold copy of next player move
 	int preX_Move{ 0 };
 	int preY_Move{ 0 };
@@ -96,7 +117,9 @@ private: // methods
 	bool validateMoveUp(MOVE &state);
 	bool validateMoveDown(MOVE &state);
 
-
+	// functions to callulates offsets before render
+	void callculateXOfssets();
+	void callculateYOfssets();
 };
 
 #endif

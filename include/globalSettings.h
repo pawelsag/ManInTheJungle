@@ -7,8 +7,9 @@
 
 constexpr int SCREEN_WIDTH = 800;
 constexpr int SCREEN_HEIGHT = 600;
-constexpr int  JUNGLE_TILE_X_SIZE = SCREEN_WIDTH /20;
-constexpr int  JUNGLE_TILE_Y_SIZE = SCREEN_HEIGHT/15; 
+constexpr int JUNGLE_TILE_X_SIZE = SCREEN_WIDTH /20;
+constexpr int JUNGLE_TILE_Y_SIZE = SCREEN_HEIGHT/15; 
+
 constexpr const char * pathToBG = "./Textures/background/";
 constexpr const char * pathToCharacter = "./Textures/Character/sprites/";
 constexpr const char * pathToJungleTiles = "./Textures/jungle_tileset/";
