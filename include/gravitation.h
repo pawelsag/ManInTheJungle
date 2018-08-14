@@ -33,7 +33,7 @@ public:
 	gravitation(textureStateManager & stateObject);
 	~gravitation()=default;
 	
-	void antigravityForce(int strength);
+	void antigravityForce(float strength);
 	gravityDetails&  getHeight(gravityDetails& currentVerticalVelocity);
 
 	inline float gravityEqeuation(int x) {
