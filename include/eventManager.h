@@ -21,15 +21,15 @@ class eventManager
 	textureStateManager *currentPlayerStatePtr;
 	// service every incoming event in this thread
 	std::thread eventManagerThread;
-	
+
 public:
 	eventManager() = default;
-	
+
 	eventManager(textureStateManager & textureManager);
 	~eventManager();
 	void run();
 	void makeMove(SDL_Keycode & keyID);
-	void clearMove(SDL_Keycode & keyID);	
+	void clearMove(SDL_Keycode & keyID);
 
 };
 

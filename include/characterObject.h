@@ -13,7 +13,7 @@ public:
 	characterObject(characterObject & instance);
 	characterObject(characterObject && instance);
 	characterObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture,ST::CHARACTERSTATE State);
-	
+
 	characterObject & operator=( characterObject& instance );
 	characterObject & operator=( characterObject&& instance );
 
@@ -25,8 +25,8 @@ public:
 			this->cropId = 0;
 		else
 			this->cropId++;
-		
-		
+
+
 	}
 
 };

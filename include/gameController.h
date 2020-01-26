@@ -26,11 +26,11 @@ constexpr const int CAMERA_START_Y_OFFSET = 200;
 struct Point{
 	int x,y;
 };
- 
+
 // this class use global settings to load levels and texture from files,
 class gameController
 {
-	// movement statets 
+	// movement statets
 	enum MOVE{
 		IDLE =0,
 		MOVE_X_VALID=1,
@@ -74,7 +74,7 @@ private://members
 	gravitation::gravityDetails currentVerticalVelocity;
 	// main class to manage currently used texture for player
 	textureStateManager currentPlayerState;
-	// main class to manage icomming events  
+	// main class to manage icomming events
 	eventManager *event;
 	// variabels keep info about currently set speed
 	int velocityHorizontal{ 0 };
@@ -92,18 +92,18 @@ private://members
 	size_t mapRowCount = (SCREEN_HEIGHT/JUNGLE_TILE_Y_SIZE);
 	size_t jungleItemsCount = mapColCount * mapRowCount;
 	size_t currentRenderOffset_x;
-	size_t currentRenderOffset_y, currentRenderOffset_y_copy; 
+	size_t currentRenderOffset_y, currentRenderOffset_y_copy;
 	// variable to validate move
 	MOVE isMoveValid{MOVE::IDLE};
 	// evry level starts on platform consist of 3 block of ground and 2 block of player = 5*JUNGLE_TILE_Y_SIZE
-	int playerStartOffset_x{10}, playerStartOffset_y{SCREEN_HEIGHT - 5*JUNGLE_TILE_Y_SIZE }; 
+	int playerStartOffset_x{10}, playerStartOffset_y{SCREEN_HEIGHT - 5*JUNGLE_TILE_Y_SIZE };
 	int playerX_Offset, playerY_Offset;
 public:
 	gameController();
 	void run();
 	~gameController();
 private: // methods
-	
+
 	void updateObjectsPosition();
 
 	MOVE validateMove();

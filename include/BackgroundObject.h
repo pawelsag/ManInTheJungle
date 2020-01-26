@@ -2,11 +2,11 @@
 #define BACKGROUNDOBJECT
 #include <stdint.h>
 #include "renderObject.h"
-/* 
-	class hold background textures 
+/*
+	class hold background textures
 	to render smooth move i need two sets of textures
 	When render approaching  the edge, i glue second texture to the first and vice versa
-	
+
 */
 class BackgroundObject : public renderObject
 {
@@ -17,8 +17,8 @@ public:
 	BackgroundObject(BackgroundObject & instance);
 	BackgroundObject(renderObject && instance);
 	BackgroundObject(TextureRenderPosition &positionInfo, SDL_Rect & textureParam ,SDL_Texture &&texture);
-	
-	
+
+
 	BackgroundObject & operator=( BackgroundObject& instance );
 	BackgroundObject & operator=( BackgroundObject&& instance );
 

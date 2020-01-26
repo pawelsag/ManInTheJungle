@@ -9,15 +9,15 @@ struct TextureRenderPosition{
 	int x_beginOffset, y_beginOffset;
 	int width, height;
 	bool readyToRender;
-	//default contructor 
+	//default contructor
 	TextureRenderPosition()
-	:x_beginOffset(0),y_beginOffset(0)  
+	:x_beginOffset(0),y_beginOffset(0)
 	{
 		x_offset = y_offset = width = height =0;
 		readyToRender = false;
 	}
 	TextureRenderPosition(int x, int y, int w, int h)
-	:x_beginOffset(x),y_beginOffset(y)  
+	:x_beginOffset(x),y_beginOffset(y)
 	{
 		x_offset = x;
 		y_offset = y;
@@ -27,7 +27,7 @@ struct TextureRenderPosition{
 	}
 	// copy constructor
 	TextureRenderPosition(TextureRenderPosition  &pos)
-	:x_beginOffset(pos.x_beginOffset),y_beginOffset(pos.y_beginOffset)  
+	:x_beginOffset(pos.x_beginOffset),y_beginOffset(pos.y_beginOffset)
 	{
 		x_offset = pos.x_offset;
 		y_offset = pos.y_offset;
@@ -38,7 +38,7 @@ struct TextureRenderPosition{
 
 	// move constructor
 	TextureRenderPosition(TextureRenderPosition  &&pos)
-	:x_beginOffset(pos.x_beginOffset),y_beginOffset(pos.y_beginOffset)  
+	:x_beginOffset(pos.x_beginOffset),y_beginOffset(pos.y_beginOffset)
 	{
 		x_offset = pos.x_offset;
 		y_offset = pos.y_offset;
@@ -51,7 +51,7 @@ struct TextureRenderPosition{
 	 {
 		if(this == &pos )
 			return *this;
-		
+
 		this->x_beginOffset = pos.x_beginOffset;
 
 		this->y_beginOffset = pos.y_beginOffset;
@@ -128,7 +128,7 @@ namespace ST{
 		// becouse based on him i count amount of elemnts in enum type
 		SPECIAL
 	};
-	constexpr const int STATE_COUNT = CHARACTERSTATE::SPECIAL + 1; 
+	constexpr const int STATE_COUNT = CHARACTERSTATE::SPECIAL + 1;
 
 	struct CHARACTERSTATE_INFO{
 		const char * TextureName;

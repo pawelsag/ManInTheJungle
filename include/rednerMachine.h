@@ -20,20 +20,15 @@ public:
 	void removeObject( int offset );
 	void appendObject(renderObject * obj);
 	void repaint();
-	
-
-	// inline fucntions
 
 	inline void clear(){
 		this->renderBuffer.clear();
 		SDL_RenderClear(this->renderObj);
-		
 	}
 
 	inline SDL_Renderer & getRenderObject(){
 		return *this->renderObj;
 	};
-	
 	~rednerMachine(){};
 
 };

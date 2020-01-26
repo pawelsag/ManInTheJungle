@@ -9,7 +9,7 @@ class jungleObject :public renderObject
 private:
 	unsigned char texture_code;
 public:
-	//create default object without texture and position 
+	//create default object without texture and position
 	jungleObject()=default;
 	// contruct object with given position and size
 	jungleObject(int x, int y, int width, int height, unsigned char code, TEXTURETYPE txType = TEXTURETYPE::OBSTACLE );
@@ -23,14 +23,14 @@ public:
 	jungleObject & operator=( jungleObject&& instance );
 	void setTextutreMetaData( int x,int y, int w, int h );
 	void setTextutreMetaData( const SDL_Rect & textureParams );
-	
+
 	inline unsigned char getCode()const{
 		return this->texture_code;
 	}
 	inline void changeTextureType(TEXTURETYPE txType){
 		this->textType = txType;
 	}
-	
+
 	void updatePosition( int x , int y );
 };
 

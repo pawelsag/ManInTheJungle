@@ -31,7 +31,7 @@ public:
 	}
 
 	inline ST::CHARACTERSTATE & getState(){
-		return this->currentPlayerState; 
+		return this->currentPlayerState;
 	}
 
 	inline void saveCurrentState(){
@@ -43,14 +43,14 @@ public:
 	}
 
 	inline void restoreState(){
-		 this->currentPlayerState = this->savedPlayerState; 
+		 this->currentPlayerState = this->savedPlayerState;
 	}
 
 	inline void resetState(){
 		this->currentPlayerState = ST::CHARACTERSTATE::IDLE;
 	}
 
-	
+
 };
 
 #endif

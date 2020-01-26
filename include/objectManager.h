@@ -7,15 +7,14 @@
 #include "customTypes.h"
 #ifndef OBJECTMANAGER
 #define OBJECTMANAGER
-// this class is responsible for loading, and preapring 
-// all textures necessary for each level 
+// this class is responsible for loading, and preapring
+// all textures necessary for each level
 
 class objectManager
 {
 	friend class gameController;
 
-private: // members
-	// 
+private:
 	std::vector<renderObject*> BackgroundObjects;
 	std::vector<JungleTilesSettings> JungleTilesInfo;
 	SDL_Renderer & render_Object;
@@ -31,7 +30,7 @@ private: // members
 
 	containerSize levelSize;
 	// fast state lokok-up tabel
-	// translate states to get object with proper texture 
+	// translate states to get object with proper texture
 	std::array<uint32_t, ST::STATE_COUNT > stateLookUpTable;
 	// var with map size
 	size_t mapRowsCount, mapColsCount;
@@ -47,7 +46,7 @@ public:
 	}
 
 	inline auto & getJungleTileInfo(unsigned char signature)const {
-		
+
 		for( auto & jungleTile : this->JungleTilesInfo)
 		{
 			if( jungleTile.code  == signature)
@@ -62,7 +61,7 @@ private: // helper functions
 	void loadLevel();
 	void loadMainCharacter();
 
-	
+
 };
 
 #endif
